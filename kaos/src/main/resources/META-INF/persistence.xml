@@ -4,6 +4,7 @@
     <jta-data-source>jdbc/kaos</jta-data-source>
     <class>kaos.core.Team</class>
     <class>kaos.core.KaosUser</class>
+    <class>kaos.core.Message</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

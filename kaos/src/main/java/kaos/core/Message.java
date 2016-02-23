@@ -35,6 +35,9 @@ public class Message implements Serializable {
     @ManyToOne
     private KaosUser user;
     
+    public Message() {
+    }
+    
     public Message(Long id, String text, Long time){
         this.id = id;
         this.text = text;

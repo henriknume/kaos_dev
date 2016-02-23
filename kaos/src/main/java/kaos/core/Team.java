@@ -31,6 +31,9 @@ public class Team implements Serializable {
     @Setter
     private String password;
     
+    public Team() {
+    }
+    
     
     public Team(String name, String password){
         this.name = name;
