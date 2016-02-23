@@ -31,10 +31,10 @@ public class Team implements Serializable {
     @Setter
     private String password;
     
-    public Team() {}          // constructor.. needed i think ?
     
-    public Team(String name){
+    public Team(String name, String password){
         this.name = name;
+        this.password = password;
     }
     
 
