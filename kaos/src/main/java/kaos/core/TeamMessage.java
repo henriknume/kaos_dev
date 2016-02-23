@@ -17,11 +17,13 @@ import javax.persistence.Id;
  */
 @Entity
 public class TeamMessage extends Message {
-
+    private Team toTeam;
+    
     private static final long serialVersionUID = 1L;
 
-    public TeamMessage(Long id, String text, Long time) {
+    public TeamMessage(Long id, String text, Long time, Team toTeam) {
         super(id, text, time);
+        this.toTeam = toTeam;
     }
     
 }

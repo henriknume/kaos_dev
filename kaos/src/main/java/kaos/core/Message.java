@@ -33,7 +33,7 @@ public class Message implements Serializable {
     @Setter
     private Long time;
     @ManyToOne
-    private User user;
+    private KaosUser user;
     
     public Message(Long id, String text, Long time){
         this.id = id;

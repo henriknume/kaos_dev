@@ -18,9 +18,12 @@ import javax.persistence.Id;
 @Entity
 public class PrivateMessage extends Message {
 
+    private KaosUser to;
+    
     private static final long serialVersionUID = 1L;
 
-    public PrivateMessage(Long id, String text, Long time) {
+    public PrivateMessage(Long id, String text, Long time, KaosUser to) {
         super(id, text, time);
+        this.to = to;
     }
 }
