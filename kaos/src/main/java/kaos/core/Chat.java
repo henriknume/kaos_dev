@@ -28,7 +28,7 @@ public class Chat {
     private TeamMessageList teamMessageList;
     
     public Chat() {
-        Logger.getAnonymousLogger().log(Level.INFO, "Shop alive");
+        Logger.getAnonymousLogger().log(Level.INFO, "Chat alive");
     }
     
     public UserList getUserList(){

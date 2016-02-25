@@ -58,59 +58,44 @@ public class TestChatPersistence {
     public void testCreateUser(){
         KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         chat.getUserList().create(u);
+        List<KaosUser> ul = chat.getUserList().findAll();
+        assertTrue(ul.size() > 0);
+        assertTrue(ul.get(0).equals(u));
+    }
+    
+    @Test
+    public void testUserGetByLogin() throws Exception {
+        KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        chat.getUserList().create(u);
         KaosUser temp = chat.getUserList().getByLogin("uhrj");
         assertTrue(temp != null);
-        assertTrue(temp.equals(u));
-    }
-    /*
-    @Test
-    public void testPersistAProduct() throws Exception {
-        Product p = new Product("aaa", 999);
-        shop.getProductCatalogue().create(p);
-        List<Product> ps = shop.getProductCatalogue().findAll();
-        assertTrue(ps.size() > 0);
-        assertTrue(ps.get(0).getName().equals(p.getName()));
+        assertTrue(temp.getLogin().equals(u.getLogin()));
     }
     
+
     @Test
-    public void testProductGetByName() throws Exception {
-        Product p = new Product("aaa", 999);
-        shop.getProductCatalogue().create(p);
-        List<Product> ps = shop.getProductCatalogue().getByName("aaa");
-        assertTrue(ps.size() > 0);
-        assertTrue(ps.get(0).getName().equals(p.getName()));
-    }
-    
-    @Test
-    public void testDelete() throws Exception {
-        Product p = new Product("aaa", 999);
-        shop.getProductCatalogue().create(p);
-        List<Product> ps = shop.getProductCatalogue().getByName("aaa");
-        assertTrue(ps.get(0).getName().equals(p.getName()));
-        shop.getProductCatalogue().delete(p.getId());
-        ps = shop.getProductCatalogue().findAll();
-        assertTrue(ps.isEmpty());
-    }
-    
-    @Test
-    public void testFind() throws Exception {
-        Product p = new Product("aaa", 999);
-        shop.getProductCatalogue().create(p);
-        Product q = shop.getProductCatalogue().find(p.getId());
-        assertTrue(q.getId().equals(p.getId()));
+    public void testDeleteUser() throws Exception {
+        KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        chat.getUserList().create(u);
+        List<KaosUser> ul = chat.getUserList().findAll();
+        assertTrue(ul.size() > 0);
+        assertTrue(ul.get(0).equals(u));
+        chat.getUserList().delete("uhrj");
+        ul = chat.getUserList().findAll();
+        assertTrue(ul.isEmpty());
     }
     
     @Test
     public void testUpdate() throws Exception {
-        Product p = new Product("aaa", 999);
-        shop.getProductCatalogue().create(p);
-        List<Product> ps = shop.getProductCatalogue().getByName("aaa");
-        assertTrue(ps.get(0).getName().equals(p.getName()));
-        p.setPrice(888);
-        shop.getProductCatalogue().update(p);
-        assertTrue(shop.getProductCatalogue().find(p.getId()).getPrice() == p.getPrice());
+        KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        chat.getUserList().create(u);
+        KaosUser temp = chat.getUserList().getByLogin("uhrj");
+        assertTrue(temp.getPassword().equals(u.getPassword()));
+        u.setPassword("456");
+        chat.getUserList().update(u);
+        assertTrue(chat.getUserList().getByLogin("uhrj").getPassword().equals(u.getPassword()));
     }
-    
+    /*
     @Test
     public void testFindRange() throws Exception {
         Product p = new Product("aaa", 999);
