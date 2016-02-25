@@ -6,6 +6,7 @@
 package kaos.core;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class PrivateMessage extends Message {
     
     private static final long serialVersionUID = 1L;
 
-    public PrivateMessage(Long id, String text, Long time, KaosUser to) {
+    public PrivateMessage(Long id, String text, Date time, KaosUser to) {
         super(id, text, time);
         this.to = to;
     }

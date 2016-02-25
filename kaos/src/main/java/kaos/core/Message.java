@@ -6,11 +6,15 @@
 package kaos.core;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,14 +35,15 @@ public class Message implements Serializable {
     private String text;
     @Getter
     @Setter
-    private Long time;
+    @Temporal(TemporalType.DATE)
+    private Date time;
     @ManyToOne
     private KaosUser user;
     
     public Message() {
     }
     
-    public Message(Long id, String text, Long time){
+    public Message(Long id, String text, Date time){
         this.id = id;
         this.text = text;
         this.time = time;

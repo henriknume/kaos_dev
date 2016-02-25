@@ -6,6 +6,7 @@
 package kaos.core;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class TeamMessage extends Message {
     
     private static final long serialVersionUID = 1L;
 
-    public TeamMessage(Long id, String text, Long time, Team toTeam) {
+    public TeamMessage(Long id, String text, Date time, Team toTeam) {
         super(id, text, time);
         this.toTeam = toTeam;
     }
