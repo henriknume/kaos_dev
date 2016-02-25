@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en" ng-app="Chat">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../../resources/bower_components/angular/angular.min.js"></script>
+        <script src="../../resources/bower_components/angular-route/angular-route.min.js"></script>
+        <script src="js/app.js"></script>   
+        <script src="js/controllers.js"></script> 
+    </head>
+    <body>
+        <div>
+            <h1>This is sidebar</h1>
+            <p>Click on a name to go to that chat room</p>
+            <a href="#/chat/{{teamName}}">{{teamName}}</a>            
+            <a href="#/chat/{{teamName}}">{{teamName}}</a>
+            <a href="#/chat/aTeam">aTeam</a>
+        </div>
+        
+        <div>
+            <h1>This is chat box</h1>
+             <div class="view-container">
+                <!-- Include the view template for the current route -->
+                <div ng-view ></div>
+            </div>
+        </div>
+        
+        
+        <!--<table class="table">
+            <tr ng-repeat="message in messages | filter:query" ng-class-odd="'odd'" 
+                    ng-class-even="'even'" >
+                <img src="{{message.sender.image}}"/>
+                <td>{{message.sender}}</td>
+                <td>{{message.text}}</td>
+                <td>{{message.timeSent}} </td>
+            </tr>
+        </table>-->
+        
+    </body>
+</html>
