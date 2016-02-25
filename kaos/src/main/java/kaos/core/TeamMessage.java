@@ -53,13 +53,13 @@ public class TeamMessage implements Serializable {
     private KaosUser sender;
     @Getter
     @Setter
-    private KaosUser toTeam;
+    private Team toTeam;
     
     
     public TeamMessage() {
     }
     
-    public TeamMessage(Long id, String text, Date time,KaosUser sender, KaosUser toTeam){
+    public TeamMessage(Long id, String text, Date time,KaosUser sender, Team toTeam){
         this.id = id;
         this.text = text;
         this.time = time;

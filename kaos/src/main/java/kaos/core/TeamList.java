@@ -14,7 +14,7 @@ import kaos.persistence.AbstractDAO;
  * @author David
  */
 @Stateless
-public class TeamList extends AbstractDAO<Team, Long> {
+public class TeamList extends AbstractDAO<Team, String> {
     @PersistenceContext
     private EntityManager em;
     

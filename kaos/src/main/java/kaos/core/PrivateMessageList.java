@@ -32,12 +32,12 @@ public class PrivateMessageList extends AbstractDAO<PrivateMessage, Long>{
     
     
     public List<PrivateMessage> getBySender(String sender){
-        String jpql = "select m from PrivateMessage m where m.sender = :sender";
+        String jpql = "select m from PrivateMessage m where m.sender_login = :sender";
         return em.createQuery(jpql, PrivateMessage.class).setParameter("sender", sender).getResultList();  
     }
     
     public List<PrivateMessage> getByReceiver(String receiver){
-        String jpql = "select m from PrivateMessage m where m.receiver = :receiver";
+        String jpql = "select m from PrivateMessage m where m.receiver_login = :receiver";
         return em.createQuery(jpql, PrivateMessage.class).setParameter("receiver", receiver).getResultList();  
     }
     

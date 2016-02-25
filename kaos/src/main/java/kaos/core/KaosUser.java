@@ -42,4 +42,14 @@ public class KaosUser implements Serializable {
         this.password = password;
         this.email = email;
     }
+    
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof KaosUser){
+            KaosUser temp = (KaosUser)o;
+            if(this.login.equals(temp.login))
+                return true;
+        }
+            return false;
+    }
 }
