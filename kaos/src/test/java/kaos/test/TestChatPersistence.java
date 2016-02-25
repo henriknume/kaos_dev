@@ -95,31 +95,31 @@ public class TestChatPersistence {
         chat.getUserList().update(u);
         assertTrue(chat.getUserList().getByLogin("uhrj").getPassword().equals(u.getPassword()));
     }
-    /*
+    
     @Test
     public void testFindRange() throws Exception {
-        Product p = new Product("aaa", 999);
-        Product q = new Product("bbb", 888);
-        Product r = new Product("ccc", 777);
-        shop.getProductCatalogue().create(p);
-        shop.getProductCatalogue().create(q);
-        shop.getProductCatalogue().create(r);
-        List<Product> ps = shop.getProductCatalogue().findRange(1, 2);
-        assertTrue(ps.get(0).getName().equals(q.getName()));
-        assertTrue(ps.get(1).getName().equals(r.getName()));
+        KaosUser d = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        KaosUser a = new KaosUser("Arvid", "444", "avd@student.chalmers.se");
+        KaosUser m = new KaosUser("enki" , "323", "enk@student.chalmers.se");
+         chat.getUserList().create(d);
+         chat.getUserList().create(a);
+         chat.getUserList().create(m);
+        List<KaosUser> ks = chat.getUserList().findRange(1, 2);
+        assertTrue(ks.get(0).getLogin().equals(a.getLogin()));
+        assertTrue(ks.get(1).getLogin().equals(m.getLogin()));
     }
     
     @Test
     public void testCount() throws Exception {
-        Product p = new Product("aaa", 999);
-        Product q = new Product("bbb", 888);
-        Product r = new Product("ccc", 777);
-        shop.getProductCatalogue().create(p);
-        shop.getProductCatalogue().create(q);
-        shop.getProductCatalogue().create(r);
-        assertTrue(shop.getProductCatalogue().count() == 3);
+         KaosUser d = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+         KaosUser a = new KaosUser("Arvid", "444", "avd@student.chalmers.se");
+         KaosUser m = new KaosUser("enki" , "323", "enk@student.chalmers.se");
+         chat.getUserList().create(d);
+         chat.getUserList().create(a);
+         chat.getUserList().create(m);
+         assertTrue(chat.getUserList().count() == 3);
     }
-    */
+    
     // Need a standalone em to remove testdata between tests
     // No em accessible from interfaces
     @PersistenceContext(unitName = "kaos_test_pu")
