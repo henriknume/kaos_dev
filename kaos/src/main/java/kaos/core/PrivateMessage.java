@@ -11,20 +11,47 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author Davidf
  */
 @Entity
-public class PrivateMessage extends Message {
+public class PrivateMessage implements Serializable{
+private static final long serialVersionUID = 1L;
+    @Id
+    @Getter
+    @Setter
+    private Long id;
+    @Getter
+    @Setter
+    private String text;
+    @Getter
+    @Setter
+    @Temporal(TemporalType.DATE)
+    private Date time;
+    @Getter
+    @Setter
+    private KaosUser sender;
+    @Getter
+    @Setter
+    private KaosUser receiver;
 
-    private KaosUser to;
+
+    public PrivateMessage(){
+        
+    }
     
-    private static final long serialVersionUID = 1L;
-
-    public PrivateMessage(Long id, String text, Date time, KaosUser to) {
-        super(id, text, time);
-        this.to = to;
+    public PrivateMessage(Long id, String text, Date time, KaosUser sender, KaosUser receiver) {
+        this.id = id;
+        this.text = text;
+        this.time = time;
+        this.sender = sender;
+        this.receiver = receiver;      
     }
 }

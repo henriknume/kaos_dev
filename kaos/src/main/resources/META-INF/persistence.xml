@@ -4,6 +4,8 @@
     <jta-data-source>jdbc/kaos</jta-data-source>
     <class>kaos.core.Team</class>
     <class>kaos.core.KaosUser</class>
+    <class>kaos.core.PrivateMessage</class>
+    <class>kaos.core.TeamMessage</class>
     <class>kaos.core.Message</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
