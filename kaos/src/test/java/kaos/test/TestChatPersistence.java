@@ -95,7 +95,7 @@ public class TestChatPersistence {
         chat.getUserList().update(u);
         assertTrue(chat.getUserList().getByLogin("uhrj").getPassword().equals(u.getPassword()));
     }
-    */
+    
     @Test
     public void testFindRange() throws Exception {
         KaosUser d = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
