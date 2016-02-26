@@ -4,9 +4,9 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html lang="en" ng-app="Chat">
+<html lang="en">
     <head>
-        <title>TODO supply a title</title>
+        <title>Kaosdev chat</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="../../resources/bower_components/jquery/dist/jquery.min.js"></script>
@@ -14,34 +14,43 @@ and open the template in the editor.
         <script src="../../resources/bower_components/angular-route/angular-route.min.js"></script>
         <script src="js/app.js"></script>   
         <script src="js/controllers.js"></script> 
+        <link rel="stylesheet" type="text/css" href="css/mainCss.css">
     </head>
-    <body>
-        <div>
+    <body ng-app="chat" ng-controller="mainCtrl">
+        <div id="sidebar">
             <h1>This is sidebar</h1>
-            <p>Click on a name to go to that chat room</p>
-            <a href="#/chat/{{teamName}}">{{teamName}}</a>            
-            <a href="#/chat/{{teamName}}">{{teamName}}</a>
-            <a href="#/chat/aTeam">aTeam</a>
-        </div>
-        
-        <div>
-            <h1>This is chat box</h1>
-             <div class="view-container">
-                <!-- Include the view template for the current route -->
-                <div ng-view ></div>
+            <div>
+                <h4>Click on one of your following teams to start chatting!</h4>
+                
+                <table>
+                    <tr ng-repeat="team in teams">
+                        <td ng-click="enterChatRoom(team)">{{team}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
         
-        
-        <!--<table class="table">
-            <tr ng-repeat="message in messages | filter:query" ng-class-odd="'odd'" 
-                    ng-class-even="'even'" >
-                <img src="{{message.sender.image}}"/>
-                <td>{{message.sender}}</td>
-                <td>{{message.text}}</td>
-                <td>{{message.timeSent}} </td>
-            </tr>
-        </table>-->
+        <div id="chat_window">
+            <h1>This is chat window</h1>
+            
+            <div>
+                <!--This is where all messages will appear-->
+                <table>
+                    <tr ng-repeat="message in log">
+                        <td class="chat_message">
+                            <p class="chat_text">{{message.text}}</p>
+                            <p class="chat_date"><em>{{message.date}}</em></p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            
+            <form id='chatbox' ng-submit="writeMessage(text)">
+                <input type="text" ng-model="text" name="text" />
+                <input type="submit" id="submit" value="Send" />
+            </form>
+        </div>
         
     </body>
 </html>

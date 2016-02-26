@@ -1,33 +1,18 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 'use strict';
 
-/* 
- *  The Shop App
- */
-var chat = angular.module('Chat', [
-    'ngRoute',
-    //'MessageService',
-    'MessageControllers'
-]);
+//Here we define the module of our app. The array contains all other modules 
+//that this one depends on. 
+var chat = angular.module('chat', ['chatControllers']);
 
-
+/*
+ * Don't know if we need this route provider yet, or at all. 
+ * 
 chat.config(['$routeProvider',
     function ($routeProvider) {  // Injected object $routeProvider
-        console.log("=========$routeProvider start======");
         $routeProvider.
-                /*when('/'), {
-                    templateUrl: 'partials/chat.html',
-                    controller: 'ChatMessageCtrl'
-                }.
                 when('/chat/:team', {
-                    templateUrl: 'partials/teamChat.html',
-                    controller: 'ChatMessagesCtrl'
-                }).*/
-                otherwise({
-                    redirectTo: '/login.html'
+                    templateUrl: 'main.html',
+                    controller: 'mainCtrl'
                 });
     }]);
+*/

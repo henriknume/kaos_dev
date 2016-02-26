@@ -1,26 +1,37 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 'use strict';
 
-/*
- * Controllers
- */
+//Here we define a module for our controllers. The array contains other 
+//modules this one depends on. 
+var chatControllers = angular.module('chatControllers', []);
 
-var MessageControllers = angular.module('MessageControllers', []);
-
-// General navigation controller
-MessageControllers.controller('NavigationCtrl', ['$scope', '$location',
-    function($scope, $location) {
-        $scope.navigate = function(url) {
-            $location.path(url);
+//This is our main controller. Our only controller at the moment. 
+chatControllers.controller('mainCtrl', ['$scope', function($scope){
+        
+        /*Here we can declare any variables or function we want to 
+          access from the HTML page. */
+        
+        //List of all teams
+        $scope.teams = ['kaosdev', 'slackerz', 'chalmerz']; 
+        
+        //List of all chat messages and the time of their posting
+        $scope.log = [{
+                text: 'Welcome to this awesome chat site!', 
+                date: '2016-02-xx'
+            }];
+        
+        //This function is called when the user selects a team chat
+        $scope.enterChatRoom = function(team){
+            $scope.log.push({
+                text: 'Welcome to the chat chanel for ' + team,
+                date: '2016-02-xx'              
+            });
         };
-    }]);
-
-MessageControllers.controller('ChatMessagesCtrl', ['$scope', 'MessagesProxy',
-        function($scope, MessagesProxy){
-            $scope.teamName = 'kaosdev';            
-            
-        }]);
+        
+        //This function is called when the user writes a new message in a chat
+        $scope.writeMessage = function(text){
+            $scope.log.push({
+                text: text,
+                date: '2016-02-xx'
+            });
+        };
+}]);
