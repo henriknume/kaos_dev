@@ -45,5 +45,14 @@ public class Team implements Serializable {
     public String toString() {
         return "kaos.core.Team[ id=" + name + ", pass="+ password +" ]";
     }
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Team){
+            Team temp = (Team)o;
+            if(this.name.equals(temp.name))
+                return true;
+        }
+            return false;
+    }
     
 }
