@@ -24,7 +24,7 @@ and open the template in the editor.
                 
                 <table>
                     <tr ng-repeat="team in teams">
-                        <td ng-click="enterChatRoom(team)">{{team}}</td>
+                        <td class="team_choice" ng-click="enterChatRoom(team)">{{team}}</td>
                     </tr>
                 </table>
             </div>
@@ -38,8 +38,11 @@ and open the template in the editor.
                 <table>
                     <tr ng-repeat="message in log">
                         <td class="chat_message">
-                            <p class="chat_text">{{message.text}}</p>
-                            <p class="chat_date"><em>{{message.date}}</em></p>
+                            <img style="display: inline-block" ng-src="{{message.avatar}}"/>
+                            <div style="display: inline-block">
+                                <p class="chat_text">{{message.text}}</p>
+                                <p class="chat_date"><em>{{message.date | date:'yyyy-MM-dd HH:mm'}}</em></p>
+                            </div>
                         </td>
                     </tr>
                 </table>

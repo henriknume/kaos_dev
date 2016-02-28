@@ -15,15 +15,17 @@ chatControllers.controller('mainCtrl', ['$scope', function($scope){
         
         //List of all chat messages and the time of their posting
         $scope.log = [{
-                text: 'Welcome to this awesome chat site!', 
-                date: '2016-02-xx'
+            text: 'Welcome to this awesome chat site!', 
+            date: new Date(),
+            avatar: '../app/img/system.png'
             }];
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
             $scope.log.push({
                 text: 'Welcome to the chat chanel for ' + team,
-                date: '2016-02-xx'              
+                date: new Date(),
+                avatar: '../app/img/system.png'             
             });
         };
         
@@ -31,7 +33,8 @@ chatControllers.controller('mainCtrl', ['$scope', function($scope){
         $scope.writeMessage = function(text){
             $scope.log.push({
                 text: text,
-                date: '2016-02-xx'
+                date: new Date(),
+                avatar: '../app/img/profile-icon.png'
             });
         };
 }]);
