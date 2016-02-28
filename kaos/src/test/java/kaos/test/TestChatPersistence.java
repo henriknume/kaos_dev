@@ -54,6 +54,8 @@ public class TestChatPersistence {
         clearAll();
     }
     
+    /////////////// Tests for User ////////////////////////////////////
+ 
     @Test
     public void testCreateUser(){
         KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
@@ -86,7 +88,7 @@ public class TestChatPersistence {
     }
     
     @Test
-    public void testUpdate() throws Exception {
+    public void testUserUpdate() throws Exception {
         KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         chat.getUserList().create(u);
         KaosUser temp = chat.getUserList().getByLogin("uhrj");
@@ -97,7 +99,7 @@ public class TestChatPersistence {
     }
     
     @Test
-    public void testFindRange() throws Exception {
+    public void testUserFindRange() throws Exception {
         KaosUser d = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
         KaosUser a = new KaosUser("Arvid", "444", "avd@student.chalmers.se");
         KaosUser m = new KaosUser("enki" , "323", "enk@student.chalmers.se");
@@ -110,7 +112,7 @@ public class TestChatPersistence {
     }
     
     @Test
-    public void testCount() throws Exception {
+    public void testUserCount() throws Exception {
          KaosUser d = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
          KaosUser a = new KaosUser("Arvid", "444", "avd@student.chalmers.se");
          KaosUser m = new KaosUser("enki" , "323", "enk@student.chalmers.se");
@@ -119,14 +121,14 @@ public class TestChatPersistence {
          chat.getUserList().create(m);
          assertTrue(chat.getUserList().count() == 3);
     }
-    
+
     // Need a standalone em to remove testdata between tests
     // No em accessible from interfaces
     @PersistenceContext(unitName = "kaos_test_pu")
     @Produces
     @Default
     EntityManager em;
-
+    
     // Order matters
     private void clearAll() throws Exception {  
         utx.begin();  
@@ -137,5 +139,70 @@ public class TestChatPersistence {
         em.createQuery("delete from Team").executeUpdate();
         utx.commit();
     }
+    
+    ///////////////////////// Tests for Team class ////////////////////
+    
+    @Test
+    public void testCreateTeam(){
+        Team te = new Team("TeamUSA" , "1227");
+        chat.getTeamList().create(te);
+        List<Team> ul = chat.getTeamList().findAll();
+        assertTrue(ul.size() > 0);
+        assertTrue(ul.get(0).equals(te));
+    }
+    @Test
+     public void testTeamGetByName() throws Exception {
+        Team te = new Team("TeamSweden", "1337");
+        chat.getTeamList().create(te);
+        Team temp = chat.getTeamList().getByTeamName("TeamSweden");
+        assertTrue(temp != null);
+        assertTrue(temp.getName().equals(te.getName()));
+    }
+    @Test
+    public void testDeleteTeam() throws Exception {
+        Team te = new Team("TeamKaos","1447");
+        chat.getTeamList().create(te);
+        List<Team> ul = chat.getTeamList().findAll();
+        assertTrue(ul.size() > 0);
+        assertTrue(ul.get(0).equals(te));
+        chat.getTeamList().delete("TeamKaos");
+        ul = chat.getTeamList().findAll();
+        assertTrue(ul.isEmpty());
+    }
+    @Test
+    public void testTeamUpdate() throws Exception {
+        Team te = new Team("TeamSurf","1557");
+        chat.getTeamList().create(te);
+        Team temp = chat.getTeamList().getByTeamName("TeamSurf");
+        assertTrue(temp.getPassword().equals(te.getPassword()));
+        te.setPassword("456");
+        chat.getTeamList().update(te);
+        assertTrue(chat.getTeamList().getByTeamName("TeamSurf").getPassword().equals(te.getPassword()));
+    }
+    @Test
+    public void testTeamFindRange() throws Exception {
+        Team d = new Team("TeamSweden","1227");
+        Team a = new Team("TeamUSA","1337");
+        Team m = new Team("TeamKaos","1447");
+        chat.getTeamList().create(d);
+        chat.getTeamList().create(a);
+        chat.getTeamList().create(m);
+        List<Team> ks = chat.getTeamList().findRange(1, 2);
+        assertTrue(ks.get(0).getName().equals(a.getName()));
+        assertTrue(ks.get(1).getName().equals(m.getName()));
+    }
+    @Test
+    public void testTeamCount() throws Exception {
+        Team d = new Team("TeamSweden","1227");
+        Team a = new Team("TeamUSA","1337");
+        Team m = new Team("TeamKaos","1447");
+        chat.getTeamList().create(d);
+        chat.getTeamList().create(a);
+        chat.getTeamList().create(m);
+        assertTrue(chat.getTeamList().count() == 3);
+    }
+    
+////////////////// Tests for Private and Team Messages ///////////////////
+    
 
 }
