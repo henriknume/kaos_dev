@@ -1,6 +1,6 @@
 #sidebar{
     width:300px;
-    height:600px;
+    height:500px;
     float:left;
     display:inline-block;
     
@@ -12,7 +12,7 @@
 }
 #chat_window{
     width:800px;
-    height:600px;
+    height:500px;
     display:inline-block;
     position: relative;
     
