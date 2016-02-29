@@ -1,0 +1,40 @@
+<div>
+    <div id="sidebar">
+        <h1>This is sidebar</h1>
+        <div>
+            <h4>Click on one of your following teams to start chatting!</h4>
+
+            <table>
+                <tr ng-repeat="team in teams">
+                    <td class="team_choice" ng-click="enterChatRoom(team)">{{team}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="chat_window">
+        <h1>This is chat window</h1>
+
+        <div>
+            <!--This is where all messages will appear-->
+            <table>
+                <tr ng-repeat="message in log">
+                    <td class="chat_message">
+                        <img style="display: inline-block" ng-src="{{message.avatar}}"/>
+                        <div style="display: inline-block">
+                            <p class="chat_text">{{message.text}}</p>
+                            <p class="chat_date"><em>{{message.date | date:'yyyy-MM-dd HH:mm'}}</em></p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <form id='chatbox' ng-submit="writeMessage(text)">
+            <input type="text" ng-model="text" name="text" />
+            <input type="submit" id="submit" value="Send" />
+        </form>
+    </div>
+        
+</div>
