@@ -1,5 +1,6 @@
 package kaos.test;
 
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
@@ -203,6 +204,66 @@ public class TestChatPersistence {
     }
     
 ////////////////// Tests for Private and Team Messages ///////////////////
+    @Test
+    public void testPMCreate() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), s, r);
+        chat.getPrivateMessageList().create(pm);
+        List<PrivateMessage> pml = chat.getPrivateMessageList().findAll();
+        assertTrue(pml.size() > 0);
+        assertTrue(pml.get(0).equals(pm));
+    }
     
-
+    @Test
+    public void testPMDelete() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), s, r);
+        chat.getPrivateMessageList().create(pm);
+        List<PrivateMessage> pml = chat.getPrivateMessageList().findAll();
+        assertTrue(pml.size() > 0);
+        assertTrue(pml.get(0).equals(pm));
+        chat.getPrivateMessageList().delete(pm.getId());
+        pml = chat.getPrivateMessageList().findAll();
+        assertTrue(pml.isEmpty());
+    }
+    
+    @Test
+    public void testPMUpdate() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), s, r);
+        chat.getPrivateMessageList().create(pm);
+        List<PrivateMessage> pml = chat.getPrivateMessageList().findAll();
+        assertTrue(pml.size() > 0);
+        assertTrue(pml.get(0).equals(pm));
+        pm.setText("uppdaterad text");
+        chat.getPrivateMessageList().update(pm);
+        pml = chat.getPrivateMessageList().findAll();
+        assertTrue(pml.get(0).getText().equals("uppdaterad text"));
+    }
+    
+    @Test
+    public void testPMFindRange() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        PrivateMessage pm1 = new PrivateMessage("meddelande 1", new Date(), s, r);
+        PrivateMessage pm2 = new PrivateMessage("meddelande 2", new Date(), s, r);
+        PrivateMessage pm3 = new PrivateMessage("meddelande 3", new Date(), s, r);
+        chat.getPrivateMessageList().create(pm1);
+        chat.getPrivateMessageList().create(pm2);
+        chat.getPrivateMessageList().create(pm3);
+        List<PrivateMessage> pml = chat.getPrivateMessageList().findRange(1,2);
+        assertTrue(pml.size() == 2);
+        assertTrue(pml.get(0).equals(pm2));
+        assertTrue(pml.get(1).equals(pm3));
+    }
+    /*
+    findrange
+    count
+    getbysender
+    getbyreceiver
+    
+    */
 }

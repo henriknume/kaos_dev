@@ -19,11 +19,15 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Getter;
@@ -40,6 +44,7 @@ public class TeamMessage implements Serializable {
     @Id
     @Getter
     @Setter
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Getter
     @Setter
@@ -50,17 +55,20 @@ public class TeamMessage implements Serializable {
     private Date time;
     @Getter
     @Setter
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "SENDER_LOGIN", referencedColumnName = "LOGIN")
     private KaosUser sender;
     @Getter
     @Setter
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "RECEIVER_TEAM")
     private Team toTeam;
     
     
     public TeamMessage() {
     }
     
-    public TeamMessage(Long id, String text, Date time,KaosUser sender, Team toTeam){
-        this.id = id;
+    public TeamMessage(String text, Date time,KaosUser sender, Team toTeam){
         this.text = text;
         this.time = time;
         this.sender = sender;

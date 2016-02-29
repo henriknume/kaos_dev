@@ -7,11 +7,15 @@ package kaos.core;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Getter;
@@ -27,6 +31,7 @@ private static final long serialVersionUID = 1L;
     @Id
     @Getter
     @Setter
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Getter
     @Setter
@@ -37,9 +42,13 @@ private static final long serialVersionUID = 1L;
     private Date time;
     @Getter
     @Setter
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "SENDER_LOGIN")
     private KaosUser sender;
     @Getter
     @Setter
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "RECEIVER_LOGIN")
     private KaosUser receiver;
 
 
@@ -47,11 +56,20 @@ private static final long serialVersionUID = 1L;
         
     }
     
-    public PrivateMessage(Long id, String text, Date time, KaosUser sender, KaosUser receiver) {
-        this.id = id;
+    public PrivateMessage(String text, Date time, KaosUser sender, KaosUser receiver) {
         this.text = text;
         this.time = time;
         this.sender = sender;
         this.receiver = receiver;      
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof PrivateMessage){
+            PrivateMessage temp = (PrivateMessage)o;
+            if(this.id.equals(temp.id))
+                return true;
+        }
+            return false;
     }
 }
