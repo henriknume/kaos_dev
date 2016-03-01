@@ -40,11 +40,11 @@ public class KaosResource {
     private final Chat chat = SingletonChat.INSTANCE.getChat();
     
 @GET
-@Path("{id: \\d+}")
+@Path("/")
 @Produces({MediaType.APPLICATION_JSON})
-    public Response findUser(@PathParam("id") String id,
+    public Response findUser(@PathParam("login") String login,
             @Context Request request) {
-        KaosUser p = chat.getUserList().find(id);
+        KaosUser p = chat.getUserList().find(login);
         if (p != null) {
             return Response.ok(new KaosUserWrapper((p))).build(); // 200 ok!
         } else {
@@ -53,15 +53,33 @@ public class KaosResource {
     }
 @POST
 @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response create(JsonObject json) {     // JSON parameter
+    public Response createUser(JsonObject json) {     // JSON parameter
         KaosUser user = new KaosUser(json.getString("login"), json.getString("password"),json.getString("email"));
         chat.getUserList().create(user);
         return Response.ok().build();
     }
     
+@GET
+@Path("/count")
+@Produces({MediaType.APPLICATION_JSON})
+    public Response countUsers() {
+        
+        log.log(Level.INFO, "Count.........logging.........");
+        int c = chat.getUserList().count();
+        if(c > 0 ){
+        // Can't return primitive types, create object
+            JsonObject value = Json.createObjectBuilder().add("value", c ).build();
+            return Response.ok(value).build();  // 200 
+        }
+        else
+            {
+            return Response.noContent().build();  // 204
+        }
+    }
+ //////////////// might be used if needed ///////////////////
 @DELETE
 @Path("{id: \\d+}")
-    public Response delete(@PathParam(value = "id") String id) {
+    public Response deleteUser(@PathParam(value = "id") String id) {
     
     try{
         chat.getUserList().delete(id);
@@ -74,7 +92,7 @@ public class KaosResource {
 @PUT
 @Path(value = "{id: \\d+}")
 @Consumes(value = MediaType.APPLICATION_JSON)
-    public Response update(@PathParam(value = "id") String id, JsonObject json) {
+    public Response updateUser(@PathParam(value = "id") String id, JsonObject json) {
         chat.getUserList().update(new KaosUser(id, json.getString("password"), json.getString("email")));
         return Response.ok().build(); // 200
     }
