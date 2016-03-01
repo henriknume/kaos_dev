@@ -1,0 +1,70 @@
+-- Curl tests --
+
+--> userService.js:
+
+(getUserByLogin)
+curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/users/TESTUSERLOGIN
+
+(getTeamsByLogin)
+curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/users/teams/TESTUSERLOGIN
+
+(createUser)
+curl -v  http://localhost:20074/kaosdev/webresources/users --request POST --data "login=TESTUSERLOGIN&password=TESTPASS&email=TESTEMAIL@email.com"
+
+(countUsers)
+curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/users/count
+
+
+
+--> teamService.js:
+
+(createTeam)
+curl -v  http://localhost:20074/kaosdev/webresources/teams --request POST --data "name=TESTTEAMNAME&password=TESTTEAMPASS"
+
+(getMessageLogByTeam)
+curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/teams/log/TESTTEAMNAME
+
+(getTeamMembers)
+curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/teams/members/TESTTEAMNAME
+
+(countTeams)
+curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/teams/count
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=============================================================
+
+TEMPLATES FORM EXAMPLE CODE:
+
+==============================================================
+
+*** Testing REST ***
+# GET (find). 
+curl -v -H "Accept: application/json" http://localhost:8080/rest_backend/webresources/persons 
+curl -v -H "Accept: application/json" http://localhost:8080/rest_backend/webresources/persons/11
+curl -v -H "Accept: application/json" http://localhost:8080/rest_backend/webresources/persons/count
+
+# NOTE Quotes!
+curl -v -H "Accept: application/json" "http://localhost:8080/rest_backend/webresources/persons/range?fst=2&count=10"
+
+# POST (create)
+curl -v  http://localhost:8080/rest_backend/webresources/persons --request POST --data "id=999&fname=***CREATE***&age=999"
+
+# PUT (update)
+# Must have pnumb in request
+curl -v http://localhost:8080/rest_backend/webresources/persons/11 --request PUT --data "fname=***UPDATE***"
+
+# DELETE (delete)
+curl -v http://localhost:8080/rest_backend/webresources/persons/11 --request DELETE
