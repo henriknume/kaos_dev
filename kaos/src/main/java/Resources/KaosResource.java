@@ -44,7 +44,7 @@ public class KaosResource {
 @Produces({MediaType.APPLICATION_JSON})
     public Response findUser(@PathParam("login") String login,
             @Context Request request) {
-        KaosUser p = chat.getUserList().find(login);
+        KaosUser p = chat.getUserList().getByLogin(login);
         if (p != null) {
             return Response.ok(new KaosUserWrapper((p))).build(); // 200 ok!
         } else {

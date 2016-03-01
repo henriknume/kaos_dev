@@ -47,7 +47,7 @@ public class TeamResource {
 @Produces({MediaType.APPLICATION_JSON})
     public Response findTeam(@PathParam("name") String name,
             @Context Request request) {
-        Team team = chat.getTeamList().find(name);
+        Team team = chat.getTeamList().getByTeamName(name);
         if (team != null) {
             return Response.ok(new TeamWrapper((team))).build(); // 200 ok!
         } else {
