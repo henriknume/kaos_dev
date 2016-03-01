@@ -2,37 +2,34 @@
 
 //Here we define a module for our controllers. The array contains other 
 //modules this one depends on. 
-var chatControllers = angular.module('chatControllers', []);
-
+var chat = angular.module('chat', []);
 
 //This is our main controller. Our only controller at the moment. 
-chatControllers.controller('mainCtrl', ['$scope', '$routeParams', 
-    function($scope, $routeParams){
+chat.controller('ChatController', ['$scope', '$rootScope', 'UserService', 
+    function($scope, $rootScope, UserService){
         
         /*Here we can declare any variables or function we want to 
           access from the HTML page. */
         
-        $scope.currentUser = $routeParams.user;
-        
-        //List of all teams
+        //List of all teams. 
         $scope.teams = ['kaosdev', 'slackerz', 'chalmerz']; 
         
-        $scope.currentTeam;
+        //Currently logged in user
+        $scope.currentUser = $rootScope.globals.currentUser.username;
         
         //List of all chat messages and the time of their posting
         $scope.log = [{
             text: 'Welcome ' + $scope.currentUser + '!', 
             date: new Date(),
-            avatar: 'chat/app/img/system.png'
+            avatar: 'img/system.png'
             }];
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
-            $scope.currentTeam = team;
             $scope.log = [{
                 text: 'Welcome to the chat chanel for ' + team,
                 date: new Date(),
-                avatar: 'chat/app/img/system.png'             
+                avatar: 'img/system.png'             
             }];
         };
         
@@ -41,12 +38,7 @@ chatControllers.controller('mainCtrl', ['$scope', '$routeParams',
             $scope.log.push({
                 text: text,
                 date: new Date(),
-                avatar: 'chat/app/img/profile-icon.png'
+                avatar: 'img/profile-icon.png'
             });
-        };
-}]);
-
-
-chatControllers.controller('loginCtrl', ['$scope', function($scope){
-        
+        };        
 }]);
