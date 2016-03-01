@@ -55,24 +55,20 @@ public class TeamMessage implements Serializable {
     private Date time;
     @Getter
     @Setter
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "SENDER_LOGIN", referencedColumnName = "LOGIN")
     private KaosUser sender;
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "RECEIVER_TEAM")
-    private Team toTeam;
+    private Team receiver;
     
     
     public TeamMessage() {
     }
     
-    public TeamMessage(String text, Date time,KaosUser sender, Team toTeam){
+    public TeamMessage(String text, Date time,KaosUser sender, Team receiver){
         this.text = text;
         this.time = time;
         this.sender = sender;
-        this.toTeam = toTeam;
+        this.receiver = receiver;
         
     }
     @Override
@@ -80,4 +76,13 @@ public class TeamMessage implements Serializable {
         return "kaos.core.Message[ id=" + id + ", text=" + text+",time=" + time +"]";
     }
     
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof TeamMessage){
+            TeamMessage temp = (TeamMessage)o;
+            if(this.id.equals(temp.id))
+                return true;
+        }
+            return false;
+    }
 }

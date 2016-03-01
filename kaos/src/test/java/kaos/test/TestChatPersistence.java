@@ -2,6 +2,8 @@ package kaos.test;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -208,7 +210,9 @@ public class TestChatPersistence {
     public void testPMCreate() throws Exception{
         KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
-        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), s, r);
+        chat.getUserList().create(s);
+        chat.getUserList().create(r);
+        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
         chat.getPrivateMessageList().create(pm);
         List<PrivateMessage> pml = chat.getPrivateMessageList().findAll();
         assertTrue(pml.size() > 0);
@@ -219,7 +223,9 @@ public class TestChatPersistence {
     public void testPMDelete() throws Exception{
         KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
-        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), s, r);
+        chat.getUserList().create(s);
+        chat.getUserList().create(r);
+        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
         chat.getPrivateMessageList().create(pm);
         List<PrivateMessage> pml = chat.getPrivateMessageList().findAll();
         assertTrue(pml.size() > 0);
@@ -233,7 +239,9 @@ public class TestChatPersistence {
     public void testPMUpdate() throws Exception{
         KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
-        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), s, r);
+        chat.getUserList().create(s);
+        chat.getUserList().create(r);
+        PrivateMessage pm = new PrivateMessage("hej hopp", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
         chat.getPrivateMessageList().create(pm);
         List<PrivateMessage> pml = chat.getPrivateMessageList().findAll();
         assertTrue(pml.size() > 0);
@@ -248,9 +256,11 @@ public class TestChatPersistence {
     public void testPMFindRange() throws Exception{
         KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
-        PrivateMessage pm1 = new PrivateMessage("meddelande 1", new Date(), s, r);
-        PrivateMessage pm2 = new PrivateMessage("meddelande 2", new Date(), s, r);
-        PrivateMessage pm3 = new PrivateMessage("meddelande 3", new Date(), s, r);
+        chat.getUserList().create(s);
+        chat.getUserList().create(r);
+        PrivateMessage pm1 = new PrivateMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm2 = new PrivateMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm3 = new PrivateMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
         chat.getPrivateMessageList().create(pm1);
         chat.getPrivateMessageList().create(pm2);
         chat.getPrivateMessageList().create(pm3);
@@ -259,11 +269,228 @@ public class TestChatPersistence {
         assertTrue(pml.get(0).equals(pm2));
         assertTrue(pml.get(1).equals(pm3));
     }
-    /*
-    findrange
-    count
-    getbysender
-    getbyreceiver
     
-    */
+    @Test
+    public void testPMCount() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser r = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        chat.getUserList().create(s);
+        chat.getUserList().create(r);
+        PrivateMessage pm1 = new PrivateMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm2 = new PrivateMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm3 = new PrivateMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        chat.getPrivateMessageList().create(pm1);
+        chat.getPrivateMessageList().create(pm2);
+        chat.getPrivateMessageList().create(pm3);
+        chat.getPrivateMessageList().count();
+        assertTrue(chat.getPrivateMessageList().count() == 3);
+    }
+    
+    @Test
+    public void testPMgetBySender() throws Exception{
+        KaosUser u1 = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser u2 = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        chat.getUserList().create(u1);
+        chat.getUserList().create(u2);
+        PrivateMessage pm1 = new PrivateMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm2 = new PrivateMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm3 = new PrivateMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm4 = new PrivateMessage("meddelande 4", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getUserList().getByLogin("uhrj"));
+        PrivateMessage pm5 = new PrivateMessage("meddelande 5", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm6 = new PrivateMessage("meddelande 6", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getUserList().getByLogin("uhrj"));
+        PrivateMessage pm7 = new PrivateMessage("meddelande 7", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm8 = new PrivateMessage("meddelande 8", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getUserList().getByLogin("uhrj"));
+        PrivateMessage pm9 = new PrivateMessage("meddelande 9", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        chat.getPrivateMessageList().create(pm1);
+        chat.getPrivateMessageList().create(pm2);
+        chat.getPrivateMessageList().create(pm3);
+        chat.getPrivateMessageList().create(pm4);
+        chat.getPrivateMessageList().create(pm5);
+        chat.getPrivateMessageList().create(pm6);
+        chat.getPrivateMessageList().create(pm7);
+        chat.getPrivateMessageList().create(pm8);
+        chat.getPrivateMessageList().create(pm9);
+        List<PrivateMessage> pml1 = chat.getPrivateMessageList().getBySender(chat.getUserList().getByLogin("uhrj"));
+        List<PrivateMessage> pml2 = chat.getPrivateMessageList().getBySender(chat.getUserList().getByLogin("fodavid"));
+        assertTrue(pml1.size() == 6);
+        assertTrue(pml2.size() == 3);
+    }
+    
+    @Test
+    public void testPMgetByReceiver() throws Exception{
+        KaosUser u1 = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser u2 = new KaosUser("fodavid", "123", "fodavid@student.chalmers.se");
+        chat.getUserList().create(u1);
+        chat.getUserList().create(u2);
+        PrivateMessage pm1 = new PrivateMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm2 = new PrivateMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm3 = new PrivateMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm4 = new PrivateMessage("meddelande 4", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getUserList().getByLogin("uhrj"));
+        PrivateMessage pm5 = new PrivateMessage("meddelande 5", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm6 = new PrivateMessage("meddelande 6", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getUserList().getByLogin("uhrj"));
+        PrivateMessage pm7 = new PrivateMessage("meddelande 7", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        PrivateMessage pm8 = new PrivateMessage("meddelande 8", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getUserList().getByLogin("uhrj"));
+        PrivateMessage pm9 = new PrivateMessage("meddelande 9", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getUserList().getByLogin("fodavid"));
+        chat.getPrivateMessageList().create(pm1);
+        chat.getPrivateMessageList().create(pm2);
+        chat.getPrivateMessageList().create(pm3);
+        chat.getPrivateMessageList().create(pm4);
+        chat.getPrivateMessageList().create(pm5);
+        chat.getPrivateMessageList().create(pm6);
+        chat.getPrivateMessageList().create(pm7);
+        chat.getPrivateMessageList().create(pm8);
+        chat.getPrivateMessageList().create(pm9);
+        List<PrivateMessage> pml1 = chat.getPrivateMessageList().getByReceiver(chat.getUserList().getByLogin("uhrj"));
+        List<PrivateMessage> pml2 = chat.getPrivateMessageList().getByReceiver(chat.getUserList().getByLogin("fodavid"));
+        assertTrue(pml1.size() == 3);
+        assertTrue(pml2.size() == 6);
+    }
+ 
+    @Test
+    public void testTMCreate() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        Team t = new Team("test_team", "456");
+        chat.getUserList().create(s);
+        chat.getTeamList().create(t);
+        TeamMessage tm = new TeamMessage("hej hopp", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        chat.getTeamMessageList().create(tm);
+        List<TeamMessage> tml = chat.getTeamMessageList().findAll();
+        assertTrue(tml.size() > 0);
+        assertTrue(tml.get(0).equals(tm));
+    }
+    
+    @Test
+    public void testTMDelete() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        Team t = new Team("test_team", "456");
+        chat.getUserList().create(s);
+        chat.getTeamList().create(t);
+        TeamMessage tm = new TeamMessage("hej hopp", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        chat.getTeamMessageList().create(tm);
+        List<TeamMessage> tml = chat.getTeamMessageList().findAll();
+        assertTrue(tml.size() > 0);
+        assertTrue(tml.get(0).equals(tm));
+        chat.getTeamMessageList().delete(tm.getId());
+        tml = chat.getTeamMessageList().findAll();
+        assertTrue(tml.isEmpty());
+    }
+    
+    @Test
+    public void testTMUpdate() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        Team t = new Team("test_team", "456");
+        chat.getUserList().create(s);
+        chat.getTeamList().create(t);
+        TeamMessage tm = new TeamMessage("hej hopp", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        chat.getTeamMessageList().create(tm);
+        List<TeamMessage> tml = chat.getTeamMessageList().findAll();
+        assertTrue(tml.size() > 0);
+        assertTrue(tml.get(0).equals(tm));
+        tm.setText("uppdaterad text");
+        chat.getTeamMessageList().update(tm);
+        tml = chat.getTeamMessageList().findAll();
+        assertTrue(tml.get(0).getText().equals("uppdaterad text"));
+    }
+    
+    @Test
+    public void testTMFindRange() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        Team t = new Team("test_team", "456");
+        chat.getUserList().create(s);
+        chat.getTeamList().create(t);
+        TeamMessage tm1 = new TeamMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        TeamMessage tm2 = new TeamMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        TeamMessage tm3 = new TeamMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        chat.getTeamMessageList().create(tm1);
+        chat.getTeamMessageList().create(tm2);
+        chat.getTeamMessageList().create(tm3);
+        List<TeamMessage> tml = chat.getTeamMessageList().findRange(1,2);
+        assertTrue(tml.size() == 2);
+        assertTrue(tml.get(0).equals(tm2));
+        assertTrue(tml.get(1).equals(tm3));
+    }
+    
+    @Test
+    public void testTMCount() throws Exception{
+        KaosUser s = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        Team t = new Team("test_team", "456");
+        chat.getUserList().create(s);
+        chat.getTeamList().create(t);
+        TeamMessage tm1 = new TeamMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        TeamMessage tm2 = new TeamMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        TeamMessage tm3 = new TeamMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team"));
+        chat.getTeamMessageList().create(tm1);
+        chat.getTeamMessageList().create(tm2);
+        chat.getTeamMessageList().create(tm3);
+        chat.getTeamMessageList().count();
+        assertTrue(chat.getTeamMessageList().count() == 3);
+    }
+    
+    @Test
+    public void testTMgetBySender() throws Exception{
+        KaosUser s1 = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser s2 = new KaosUser("fodavid", "456", "fodvaid@student.chalmers.se");
+        Team t1 = new Team("test_team1", "123");
+        Team t2 = new Team("test_team2", "456");
+        chat.getUserList().create(s1);
+        chat.getUserList().create(s2);
+        chat.getTeamList().create(t1);
+        chat.getTeamList().create(t2);
+        TeamMessage tm1 = new TeamMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm2 = new TeamMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm3 = new TeamMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm4 = new TeamMessage("meddelande 4", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm5 = new TeamMessage("meddelande 5", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm6 = new TeamMessage("meddelande 6", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm7 = new TeamMessage("meddelande 7", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm8 = new TeamMessage("meddelande 8", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm9 = new TeamMessage("meddelande 9", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        chat.getTeamMessageList().create(tm1);
+        chat.getTeamMessageList().create(tm2);
+        chat.getTeamMessageList().create(tm3);
+        chat.getTeamMessageList().create(tm4);
+        chat.getTeamMessageList().create(tm5);
+        chat.getTeamMessageList().create(tm6);
+        chat.getTeamMessageList().create(tm7);
+        chat.getTeamMessageList().create(tm8);
+        chat.getTeamMessageList().create(tm9);
+        List<TeamMessage> tml1 = chat.getTeamMessageList().getBySender(chat.getUserList().getByLogin("uhrj"));
+        List<TeamMessage> tml2 = chat.getTeamMessageList().getBySender(chat.getUserList().getByLogin("fodavid"));
+        assertTrue(tml1.size() == 3);
+        assertTrue(tml2.size() == 6);
+    }
+    
+    @Test
+    public void testTMgetByReceiver() throws Exception{
+        KaosUser s1 = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser s2 = new KaosUser("fodavid", "456", "fodvaid@student.chalmers.se");
+        Team t1 = new Team("test_team1", "123");
+        Team t2 = new Team("test_team2", "456");
+        chat.getUserList().create(s1);
+        chat.getUserList().create(s2);
+        chat.getTeamList().create(t1);
+        chat.getTeamList().create(t2);
+        TeamMessage tm1 = new TeamMessage("meddelande 1", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm2 = new TeamMessage("meddelande 2", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm3 = new TeamMessage("meddelande 3", new Date(), chat.getUserList().getByLogin("uhrj"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm4 = new TeamMessage("meddelande 4", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm5 = new TeamMessage("meddelande 5", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team1"));
+        TeamMessage tm6 = new TeamMessage("meddelande 6", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm7 = new TeamMessage("meddelande 7", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm8 = new TeamMessage("meddelande 8", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        TeamMessage tm9 = new TeamMessage("meddelande 9", new Date(), chat.getUserList().getByLogin("fodavid"), chat.getTeamList().getByTeamName("test_team2"));
+        chat.getTeamMessageList().create(tm1);
+        chat.getTeamMessageList().create(tm2);
+        chat.getTeamMessageList().create(tm3);
+        chat.getTeamMessageList().create(tm4);
+        chat.getTeamMessageList().create(tm5);
+        chat.getTeamMessageList().create(tm6);
+        chat.getTeamMessageList().create(tm7);
+        chat.getTeamMessageList().create(tm8);
+        chat.getTeamMessageList().create(tm9);
+        List<TeamMessage> tml1 = chat.getTeamMessageList().getByReceiver(chat.getTeamList().getByTeamName("test_team1"));
+        List<TeamMessage> tml2 = chat.getTeamMessageList().getByReceiver(chat.getTeamList().getByTeamName("test_team2"));
+        assertTrue(tml1.size() == 4);
+        assertTrue(tml2.size() == 5);
+    }
 }

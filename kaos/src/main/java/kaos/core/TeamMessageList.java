@@ -25,14 +25,14 @@ public class TeamMessageList extends AbstractDAO<TeamMessage, Long> {
     public EntityManager getEntityManager() {
         return em;
     }
-    public List<TeamMessage> getBySender(String sender){
-        String jpql = "select tm from TeamMessage tm where tm.sender_login = :sender";
+    public List<TeamMessage> getBySender(KaosUser sender){
+        String jpql = "select tm from TeamMessage tm where tm.sender = :sender";
         return  em.createQuery(jpql, TeamMessage.class).setParameter("sender", sender).getResultList();
         
     }
-    public List<TeamMessage> getByReciever(String toTeam) {
-        String jpql = "select tm from TeamMessage tm where tm.toteam_name = :toTeam";
-        return em.createQuery(jpql, TeamMessage.class).setParameter("toTeam", toTeam).getResultList();
+    public List<TeamMessage> getByReceiver(Team receiver) {
+        String jpql = "select tm from TeamMessage tm where tm.receiver = :receiver";
+        return em.createQuery(jpql, TeamMessage.class).setParameter("receiver", receiver).getResultList();
         
        }
     

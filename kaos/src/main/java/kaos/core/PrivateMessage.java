@@ -42,13 +42,9 @@ private static final long serialVersionUID = 1L;
     private Date time;
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "SENDER_LOGIN")
     private KaosUser sender;
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "RECEIVER_LOGIN")
     private KaosUser receiver;
 
 
