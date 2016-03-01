@@ -6,6 +6,8 @@
 package kaos.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,9 @@ public class Team implements Serializable {
     @Getter
     @Setter
     private String password;
+    @Getter
+    @Setter
+    private List<KaosUser> members = new ArrayList<>();
     
     public Team() {
     }
@@ -55,4 +60,12 @@ public class Team implements Serializable {
             return false;
     }
     
+    public void addUser(KaosUser user){
+        members.add(user);
+    }
+    
+    public void removeUser(KaosUser user){
+        if(members.contains(user))
+            members.remove(user);
+    }
 }

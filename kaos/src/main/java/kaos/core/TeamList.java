@@ -27,12 +27,18 @@ public class TeamList extends AbstractDAO<Team, String> {
     public Team getByTeamName(String name){
         String jpql = "select t from Team t where t.name = :name";
         List<Team> temp = em.createQuery(jpql, Team.class).setParameter("name", name).getResultList();
-        if(temp.size() == 0) {
-        return null;
-        }
-        else {
+        if(temp.isEmpty())
+            return null;
+        else
             return temp.get(0);
+    }
+    public List<KaosUser> getMembers(String teamName){
+        String jpql = "select t from Team t where t.name = :name";
+        List<Team> temp = em.createQuery(jpql, Team.class).setParameter("name", teamName).getResultList();
+        if(temp.isEmpty())
+            return null;
+        else {
+            return temp.get(0).getMembers();
         }
     }
-    
 }

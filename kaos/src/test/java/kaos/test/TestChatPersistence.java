@@ -138,8 +138,8 @@ public class TestChatPersistence {
         em.joinTransaction();
         em.createQuery("delete from PrivateMessage").executeUpdate();
         em.createQuery("delete from TeamMessage").executeUpdate();
-        em.createQuery("delete from KaosUser").executeUpdate();
         em.createQuery("delete from Team").executeUpdate();
+        em.createQuery("delete from KaosUser").executeUpdate();
         utx.commit();
     }
     
@@ -203,6 +203,29 @@ public class TestChatPersistence {
         chat.getTeamList().create(a);
         chat.getTeamList().create(m);
         assertTrue(chat.getTeamList().count() == 3);
+    }
+    
+    @Test
+     public void testTeamGetMembers() throws Exception {
+        KaosUser u1 = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
+        KaosUser u2 = new KaosUser("fodavid", "456", "fodvaid@student.chalmers.se");
+        chat.getUserList().create(u1);
+        chat.getUserList().create(u2);
+        Team te = new Team("TeamSweden", "1337");
+        te.addUser(chat.getUserList().getByLogin("uhrj"));
+        te.addUser(chat.getUserList().getByLogin("fodavid"));
+        chat.getTeamList().create(te);
+        List<KaosUser> temp = chat.getTeamList().getMembers("TeamSweden");
+        assertTrue(temp.size() == 2);
+        assertTrue(temp.contains(u1));
+        assertTrue(temp.contains(u2));
+        te = chat.getTeamList().getByTeamName("TeamSweden");
+        te.removeUser(u1);
+        chat.getTeamList().update(te);
+        temp = chat.getTeamList().getMembers("TeamSweden");
+        assertTrue(temp.size() == 1);
+        assertTrue(temp.contains(u1) == false);
+        assertTrue(temp.contains(u2));
     }
     
 ////////////////// Tests for Private and Team Messages ///////////////////
