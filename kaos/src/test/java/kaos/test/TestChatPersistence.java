@@ -516,4 +516,62 @@ public class TestChatPersistence {
         assertTrue(tml1.size() == 4);
         assertTrue(tml2.size() == 5);
     }
+    
+    
+    
+    /////////////////////////////////////////////     Test for password Protection   ///////////////////////////////////////////////////
+    
+    @Test
+    public void testSaltHashUserPassword() throws Exception {               // user
+        
+        String pass1 = "123";
+        String pass2 = "456";
+        
+        String salt1 = PasswordProtection.getSalt();
+        String salt2 = PasswordProtection.getSalt();
+        
+        String saltAndPass1 = PasswordProtection.hashPassword(pass1, salt1);
+        String saltAndPass2 = PasswordProtection.hashPassword(pass2, salt2);
+       
+        KaosUser s1 = new KaosUser("uhrj", saltAndPass1 , "uhrj@student.chalmers.se");
+        KaosUser s2 = new KaosUser("fodavid", saltAndPass2 , "fodvaid@student.chalmers.se");
+        
+        chat.getUserList().create(s1);
+        chat.getUserList().create(s2);
+        
+        KaosUser k1 = chat.getUserList().getByLogin("uhrj");
+        KaosUser k2 = chat.getUserList().getByLogin("fodavid");
+        
+        assertTrue(k1.getPassword().equals(PasswordProtection.hashPassword(pass1, salt1)));
+        assertTrue(k2.getPassword().equals(PasswordProtection.hashPassword(pass2, salt2)));
+        
+    }
+    @Test
+    public void testSaltHashTeamPassword() throws Exception {             // Team
+        
+        String pass1 = "123";
+        String pass2 = "456";
+        
+        String salt1 = PasswordProtection.getSalt();
+        String salt2 = PasswordProtection.getSalt();
+        
+        String saltAndPass1 = PasswordProtection.hashPassword(pass1, salt1);
+        String saltAndPass2 = PasswordProtection.hashPassword(pass2, salt2);
+        
+        Team t1 = new Team("TeamSweden", saltAndPass1 );
+        Team t2 = new Team("TeamUSA", saltAndPass2 );
+        
+        chat.getTeamList().create(t1);
+        chat.getTeamList().create(t2);
+        
+        Team sw = chat.getTeamList().getByTeamName("TeamSweden");
+        Team us = chat.getTeamList().getByTeamName("TeamUSA");
+        
+        assertTrue(sw.getPassword().equals(PasswordProtection.hashPassword(pass1, salt1)));
+        assertTrue(us.getPassword().equals(PasswordProtection.hashPassword(pass2, salt2)));
+    
+    }
+    
+    
+    
 }
