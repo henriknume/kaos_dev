@@ -17,6 +17,9 @@ angular.module('app').factory('TeamService', ['$http',
             getMessageLogByTeam: function(team){
                 return $http.get(url + "/log/" + team);
             },
+            sendMessageToTeam: function(team, message){
+                return $http.post(url + "/post/" + team + "/" + message);
+            },
             /*update: function(id, team) {
                 return $http.put(url + "/" + id, team);
             },*/

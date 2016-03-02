@@ -6,36 +6,38 @@
 
             <table>
                 <tr ng-repeat="team in teams">
-                    <td class="team_choice" ng-click="enterChatRoom(team)">{{team}}</td>
+                    <td class="btn btn-default btn-sm" ng-click="enterChatRoom(team)">{{team}}</td>
                 </tr>
             </table>
         </div>
-        <p><a id='logout' href="#/login" class="btn btn-primary">Logout</a></p>  
+        <p><a id='logout' href="#/login" class="btn btn-primary  btl-lg">Logout</a></p>  
     </div>
 
     <div id="chat_window">
         <h1>This is chat window</h1>
-
-        <div>
-            <!--This is where all messages will appear-->
-            <table>
-                <tr ng-repeat="message in log">
-                    <td class="chat_message">
-                        <img style="display: inline-block" ng-src="{{message.avatar}}"/>
-                        <div style="display: inline-block">
-                            <p class="chat_text">{{message.text}}</p>
-                            <p class="chat_date"><em>{{message.date | date:'yyyy-MM-dd HH:mm'}}</em></p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <div id="chat_log">  
+            <!--This is where all messages will appear-->            
+            <div ng-repeat="message in log">
+                <div class="chat_message">
+                    <img style="display: inline-block" ng-src="{{message.avatar}}"/>
+                    <div style="display: inline-block">
+                        <p class="chat_text">{{message.text}}</p>
+                        <p class="chat_date"><em>{{message.date | date:'yyyy-MM-dd HH:mm'}}</em></p>
+                    </div>
+                </div>
+            </div>   
         </div>
+        <div id="chatbox" class="input-group">
+            <form ng-submit="writeMessage(text)" id="myForm">
+                <input ng-model="text" class="form-control input-sm" placeholder="Type your message here..." />                
+            </form>
 
-
-        <form id='chatbox' ng-submit="writeMessage(text)">
-            <input type="text" ng-model="text" name="text" />
-            <input type="submit" id="submit" value="Send" />
-        </form>
+            <span class="input-group-btn">
+                <button ng-click="writeMessage(text)" class="btn btn-warning btn-sm" id="btn-chat">
+                    Send
+                </button>
+            </span>
+        </div>
     </div>  
 </div>
 <link property='stylesheet' href="chat/chatStyle.css" rel="stylesheet"/>

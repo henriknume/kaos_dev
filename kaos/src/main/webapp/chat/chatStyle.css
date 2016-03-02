@@ -11,6 +11,12 @@
     border-radius:5px;
     margin: 10px;
 }
+#logout{
+    position:absolute;
+    height:35px;
+    bottom: 0px;
+    margin: 5px;
+}
 #chat_window{
     width:800px;
     height:600px;
@@ -24,24 +30,25 @@
     border-radius:5px;
     margin: 10px;
 }
-#logout{
-    position:absolute;
-    height:35px;
-    bottom: 0px;
-    margin:10px;
+#chat_log{
+    overflow: auto;
+    height:450px;
+    margin: 10px;
 }
 #chatbox{
     position: absolute;
     bottom: 0;
     margin: 10px;
-    padding:5px;
-    border:1px solid black;
 }
 .chat_message{    
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 5px;
+    float: left;
     padding: 4px;
+    margin: 2px;
+    width: 700px;
+    
+    background-color: white;
+    border: 1px solid #9f999e;
+    border-radius: 15px;
 }
 .chat_text{
     font-family: sans-serif;
@@ -49,8 +56,4 @@
 .chat_date{
     font-family: serif;
     font-size: 12px;
-}
-.team_choice{
-    background-color: white;
-    border: 1px solid black;
 }

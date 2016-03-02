@@ -12,7 +12,7 @@ function RegisterController(UserService, $location, $rootScope, FlashService) {
 
     function register() {
         vm.dataLoading = true;
-        UserService.Create(vm.user)
+        UserService.createUser(vm.user)
             .then(function (response) {
                 if (response.success) {
                     FlashService.Success('Registration successful', true);
