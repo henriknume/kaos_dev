@@ -1,26 +1,24 @@
 'use strict';
 
-angular
-    .module('app')
-    .controller('RegisterController', RegisterController);
+angular.module('app').controller('RegisterController', 
+    ['$scope', 'UserService', '$location', '$rootScope', 'FlashService',
+        function ($scope, UserService, $location, $rootScope, FlashService){
 
-RegisterController.$inject = ['UserService', '$location', '$rootScope', 'FlashService'];
-function RegisterController(UserService, $location, $rootScope, FlashService) {
-    var vm = this;
+            $scope.register = register;
 
-    vm.register = register;
-
-    function register() {
-        vm.dataLoading = true;
-        UserService.createUser(vm.user)
-            .then(function (response) {
-                if (response.success) {
-                    FlashService.Success('Registration successful', true);
-                    $location.path('/login');
-                } else {
-                    FlashService.Error(response.message);
-                    vm.dataLoading = false;
-                }
-            });
-    }
-}
+            function register() {
+                $scope.dataLoading = true;
+                UserService.Create($scope.user)
+                    .then(function (response) {
+                        if (response.success) {
+                            FlashService.Success('Registration successful', true);
+                            $location.path('/login');
+                        } else {
+                            FlashService.Error(response.message);
+                            $scope.dataLoading = false;
+                        }
+                    });
+            }
+        }
+    ]
+);

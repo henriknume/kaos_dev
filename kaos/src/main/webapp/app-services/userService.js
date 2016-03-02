@@ -1,6 +1,5 @@
 'use strict';
 
-
 var app = angular.module('app');
 
 // Representing the remote RESTful 
