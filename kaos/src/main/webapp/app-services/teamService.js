@@ -11,9 +11,9 @@ angular.module('app').factory('TeamService', ['$http',
             /*findAll: function() {
                 return $http.get(url);
             },*/
-            /*getTeamByName: function(team) {
+            getTeamByName: function(team) {
                 return $http.get(url + "/" + team);
-            },*/
+            },
             getMessageLogByTeam: function(team){
                 return $http.get(url + "/log/" + team);
             },

@@ -1,16 +1,19 @@
 <div>
     <div id="sidebar" style="padding:5px;">
         <div>
+            <p><a id='create' href="#/create" class="btn btn-danger  btl-lg"><b>Create new team</b></a></p>  
+            <p><a id='join' href="#/join" class="btn btn-success  btl-lg"><b>Join team</b></a></p>  
+            
             <h4>Click on one of your following teams to start chatting!</h4>
             <div ng-repeat="team in teams">
-                <div class="btn btn-primary btn-sm" ng-click="enterChatRoom(team)">{{team}}</div>
+                <div class="btn btn-primary btn-xs" ng-click="enterChatRoom(team)">{{team}}</div>
                 <div style="margin-top:4px;"></div>
             </div>
         </div>        
         <div>
             <h4>{{pm_title}}</h4>
             <div ng-repeat="member in currentTeamMembers">
-                <div class="btn btn-success btn-sm" ng-click="enterPrivateChatRoom(member)">{{member}}</div>
+                <div class="btn btn-primary btn-xs" ng-click="enterPrivateChatRoom(member)">{{member}}</div>
                 <div style="margin-top:4px;"></div>
             </div>
         </div>        

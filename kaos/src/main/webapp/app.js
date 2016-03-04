@@ -21,6 +21,14 @@ function config($routeProvider, $locationProvider) {
             controller: 'RegisterController',
             templateUrl: 'register/register.view.html'
         })
+        .when('/create', {
+            controller: 'TeamCreateController',
+            templateUrl: 'team_management/team.html'
+        })
+        .when('/join', {
+            controller: 'TeamJoinController',
+            templateUrl: 'team_management/team.html'
+        })
         .otherwise({ redirectTo: '/login' });
 }
 

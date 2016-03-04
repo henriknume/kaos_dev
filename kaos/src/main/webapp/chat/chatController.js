@@ -4,7 +4,6 @@
 //modules this one depends on. 
 var chat = angular.module('chat', []);
 
-//This is our main controller. Our only controller at the moment. 
 chat.controller('ChatController', 
     ['$scope', '$rootScope', 'UserService', 'TeamService',
     function($scope, $rootScope, UserService, TeamService){

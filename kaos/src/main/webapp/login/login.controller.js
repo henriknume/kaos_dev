@@ -1,9 +1,5 @@
 'use strict';
 
-/*angular
-    .module('app')
-    .controller('LoginController', LoginController);*/
-
 angular.module('app').controller('LoginController', 
     ['$scope', '$location', 'AuthenticationService', 'FlashService',
     function ($scope, $location, AuthenticationService, FlashService) {
