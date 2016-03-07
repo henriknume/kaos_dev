@@ -31,6 +31,10 @@ public class Chat {
         Logger.getAnonymousLogger().log(Level.INFO, "Chat alive");
     }
     
+    public static Chat newInstance(){
+        return new Chat();
+    }
+            
     public UserList getUserList(){
         return userList;
     }

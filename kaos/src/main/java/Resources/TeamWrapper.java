@@ -34,7 +34,7 @@ public class TeamWrapper {
     }
     
     @XmlElement
-    public String getLogin() {
+    public String getName() {
         return team.getName();
     }
 

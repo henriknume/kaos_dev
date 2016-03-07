@@ -31,8 +31,8 @@ public class KaosConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(Resources.KaosResource.class);
         resources.add(Resources.TeamResource.class);
+        resources.add(Resources.UserResource.class);
     }
     
 }

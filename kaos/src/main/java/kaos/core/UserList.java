@@ -6,6 +6,7 @@
 package kaos.core;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,6 +25,7 @@ public class UserList extends AbstractDAO<KaosUser, String>{
         super(KaosUser.class);
     }
 
+    @Override
     public EntityManager getEntityManager() {
         return em;
     }
@@ -31,7 +33,7 @@ public class UserList extends AbstractDAO<KaosUser, String>{
     public KaosUser getByLogin(String login){
         String jpql = "select u from KaosUser u where u.login = :login";
         List<KaosUser> l = em.createQuery(jpql, KaosUser.class).setParameter("login", login).getResultList();  
-        if(l.size() == 0)
+        if(l.isEmpty())
             return null;
         else 
             //since login is unique there will be maximum 1 in the list

@@ -15,7 +15,7 @@ public enum SingletonChat {
     
     INSTANCE;
 
-    private final Chat chat = new Chat();
+    private final Chat chat = Chat.newInstance();
 
     public Chat getChat() {
         return chat;

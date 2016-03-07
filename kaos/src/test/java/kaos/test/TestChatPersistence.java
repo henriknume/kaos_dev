@@ -58,7 +58,7 @@ public class TestChatPersistence {
     }
     
     /////////////// Tests for User ////////////////////////////////////
- 
+
     @Test
     public void testCreateUser(){
         KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
@@ -125,23 +125,7 @@ public class TestChatPersistence {
          assertTrue(chat.getUserList().count() == 3);
     }
 
-    // Need a standalone em to remove testdata between tests
-    // No em accessible from interfaces
-    @PersistenceContext(unitName = "kaos_test_pu")
-    @Produces
-    @Default
-    EntityManager em;
-    
-    // Order matters
-    private void clearAll() throws Exception {  
-        utx.begin();  
-        em.joinTransaction();
-        em.createQuery("delete from PrivateMessage").executeUpdate();
-        em.createQuery("delete from TeamMessage").executeUpdate();
-        em.createQuery("delete from Team").executeUpdate();
-        em.createQuery("delete from KaosUser").executeUpdate();
-        utx.commit();
-    }
+
     
     ///////////////////////// Tests for Team class ////////////////////
     
@@ -571,7 +555,22 @@ public class TestChatPersistence {
         assertTrue(us.getPassword().equals(PasswordProtection.hashPassword(pass2, salt2)));
     
     }
+
+    // Need a standalone em to remove testdata between tests
+    // No em accessible from interfaces
+    @PersistenceContext(unitName = "kaos_test_pu")
+    @Produces
+    @Default
+    EntityManager em;
     
-    
-    
+    // Order matters
+    private void clearAll() throws Exception {  
+        utx.begin();  
+        em.joinTransaction();
+        em.createQuery("delete from PrivateMessage").executeUpdate();
+        em.createQuery("delete from TeamMessage").executeUpdate();
+        em.createQuery("delete from Team").executeUpdate();
+        em.createQuery("delete from KaosUser").executeUpdate();
+        utx.commit();
+    }
 }
