@@ -1,70 +1,48 @@
 -- Curl tests --
 
---> userService.js:
 
-(getUserByLogin)
-curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/users/TESTUSERLOGIN
-
-(getTeamsByLogin)
-curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/users/teams/TESTUSERLOGIN
-
-(createUser)
-curl -v  http://localhost:20074/kaosdev/webresources/users --request POST --data "login=TESTUSERLOGIN&password=TESTPASS&email=TESTEMAIL@email.com"
+//  userService.js:
+// these will connect with the server, but inside KaosResource.java getUserList() returns a null UserList. How to fix?
 
 (countUsers)
-curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/users/count
+curl -v -H "Accept: application/json" http://localhost:8080/kaos/webresources/users/count
+
+(createUser)
+curl -v -H "Content-Type: application/json" http://localhost:8080/kaos/webresources/users --request POST --data '{"login":"TESTUSERLOGIN", "password": "TESTPASS", "email":"TESTEMAIL@email.com"}'
 
 
 
---> teamService.js:
+
+// ignore these below for now...create must be run before
+
+(getUserByLogin)
+curl -v -H "Accept: application/json" http://localhost:8080/kaos/webresources/TESTUSERLOGIN
+
+(getTeamsByLogin)
+curl -v -H "Accept: application/json" http://localhost:8080/kaos/webresources/users/teams/TESTUSERLOGIN
+
+
+
+// teamService.js:
 
 (createTeam)
-curl -v  http://localhost:20074/kaosdev/webresources/teams --request POST --data "name=TESTTEAMNAME&password=TESTTEAMPASS"
+curl -v -H "Content-Type: application/json" http://localhost:8080/kaos/webresources/teams --request POST --data '{"name":"TESTTEAM1", "password": "TESTPASS1"}'
 
 (getMessageLogByTeam)
-curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/teams/log/TESTTEAMNAME
+curl -v -H "Accept: application/json" http://localhost:8080/kaos/webresources/teams/log/TESTTEAMNAME
 
 (getTeamMembers)
-curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/teams/members/TESTTEAMNAME
+curl -v -H "Accept: application/json" http://localhost:8080/kaos/webresources/teams/members/TESTTEAMNAME
 
 (countTeams)
-curl -v -H "Accept: application/json" http://localhost:20074/kaosdev/webresources/teams/count
-
-
-
-
-
-
-
-
-
-
-
-
-
+curl -v -H "Accept: application/json" http://localhost:8080/kaos/webresources/teams/count
 
 
 =============================================================
 
-TEMPLATES FORM EXAMPLE CODE:
+PASSED TESTS:
+
+
+
 
 ==============================================================
-
-*** Testing REST ***
-# GET (find). 
-curl -v -H "Accept: application/json" http://localhost:8080/rest_backend/webresources/persons 
-curl -v -H "Accept: application/json" http://localhost:8080/rest_backend/webresources/persons/11
-curl -v -H "Accept: application/json" http://localhost:8080/rest_backend/webresources/persons/count
-
-# NOTE Quotes!
-curl -v -H "Accept: application/json" "http://localhost:8080/rest_backend/webresources/persons/range?fst=2&count=10"
-
-# POST (create)
-curl -v  http://localhost:8080/rest_backend/webresources/persons --request POST --data "id=999&fname=***CREATE***&age=999"
-
-# PUT (update)
-# Must have pnumb in request
-curl -v http://localhost:8080/rest_backend/webresources/persons/11 --request PUT --data "fname=***UPDATE***"
-
-# DELETE (delete)
-curl -v http://localhost:8080/rest_backend/webresources/persons/11 --request DELETE
