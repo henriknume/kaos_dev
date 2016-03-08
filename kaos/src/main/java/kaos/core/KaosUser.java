@@ -33,7 +33,7 @@ public class KaosUser implements Serializable {
     @Getter
     @Setter
     private String email;
-
+    
     public KaosUser() {
     }
     
@@ -41,7 +41,7 @@ public class KaosUser implements Serializable {
         this.login = login;
         this.password = password;
         this.email = email;
-    }
+     }
     
     @Override
     public boolean equals(Object o){

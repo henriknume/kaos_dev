@@ -1,5 +1,6 @@
 
 package Resources;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -26,6 +27,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import kaos.core.Chat;
 import kaos.core.KaosUser;
+import kaos.core.PasswordProtection;
 import kaos.core.Team;
 
 
@@ -61,8 +63,9 @@ public class TeamResource {
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
-        public Response createTeam(JsonObject json) {     // JSON parameter
-            Team team = new Team(json.getString("name"), json.getString("password"));
+        public Response createTeam(JsonObject json)throws NoSuchAlgorithmException  {     // JSON parameter
+            String salt = PasswordProtection.getSalt();
+            Team team = new Team(json.getString("name"), PasswordProtection.hashPassword(json.getString("password"), salt) + salt);
             chat.getTeamList().create(team);
             return Response.ok().build();
         }

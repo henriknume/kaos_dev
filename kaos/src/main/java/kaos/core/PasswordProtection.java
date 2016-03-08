@@ -46,4 +46,12 @@ public class PasswordProtection {
         }
         return hexStringBuffert.toString();
      }
+    public static boolean checkPassword(String passClient, String passDB)throws NoSuchAlgorithmException{
+        String pass = passDB.substring(0, 64);
+        String salt = passDB.substring(64,passDB.length());
+            if(hashPassword(passClient,salt).equals(passDB)){
+                return true; // ok -> login
+            }
+            return false; // no entry
+    }
 }

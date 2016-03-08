@@ -60,7 +60,7 @@ public class TestChatPersistence {
     /////////////// Tests for User ////////////////////////////////////
 
     @Test
-    public void testCreateUser(){
+    public void testCreateUser()throws Exception{
         KaosUser u = new KaosUser("uhrj", "123", "uhrj@student.chalmers.se");
         chat.getUserList().create(u);
         List<KaosUser> ul = chat.getUserList().findAll();

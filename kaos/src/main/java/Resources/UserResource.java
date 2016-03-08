@@ -1,6 +1,7 @@
 
 package Resources;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -28,6 +29,7 @@ import javax.ejb.EJB;
 import javax.inject.Inject;
 import kaos.core.Chat;
 import kaos.core.KaosUser;
+import kaos.core.PasswordProtection;
 import kaos.core.UserList;
 /**
  *
@@ -45,7 +47,7 @@ public class UserResource {
     private Chat chat;
     
     @GET
-    @Path("/")
+    @Path("/{login}")
     @Produces({MediaType.APPLICATION_JSON})
         public Response findUser(@PathParam("login") String login,
                 @Context Request request) {
@@ -58,8 +60,11 @@ public class UserResource {
         }
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
-        public Response createUser(JsonObject json) {     // JSON parameter
-            KaosUser user = new KaosUser(json.getString("login"), json.getString("password"),json.getString("email"));
+        public Response createUser(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
+            String salt = PasswordProtection.getSalt();
+            KaosUser user = new KaosUser(json.getString("login"),
+                    PasswordProtection.hashPassword(json.getString("password"), salt) + salt
+                    ,json.getString("email"));
             chat.getUserList().create(user);
             return Response.ok().build();
         }
@@ -91,9 +96,10 @@ public class UserResource {
     @PUT
     @Path(value = "{id: \\d+}")
     @Consumes(value = MediaType.APPLICATION_JSON)
-        public Response updateUser(@PathParam(value = "id") String id, JsonObject json) {
-            
-            chat.getUserList().update(new KaosUser(id, json.getString("password"), json.getString("email")));
+        public Response updateUser(@PathParam(value = "id") String id, JsonObject json) throws NoSuchAlgorithmException {
+            String salt = PasswordProtection.getSalt();
+            chat.getUserList().update(new KaosUser(id, PasswordProtection.hashPassword(json.getString("password"), salt) +salt 
+                    ,json.getString("email")));
             return Response.ok().build(); // 200
         }
 
