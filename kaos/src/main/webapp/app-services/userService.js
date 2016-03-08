@@ -6,7 +6,7 @@ var app = angular.module('app');
 app.factory('UserService', ['$http',
     function($http) {
 
-        var url = "http://localhost:20074/kaosdev/webresources/users";
+        var url = "http://localhost:8080/kaos/webresources/users";
 
         return {
             //methods to call backend resource class (using AJAX) 
@@ -26,9 +26,9 @@ app.factory('UserService', ['$http',
             createUser: function(user) {
                 return $http.post(url, user);
             },
-            /*delete: function(id) {
-                return $http.delete(url + "/" + id);
-            },*/
+            delete: function(user) {
+                return $http.delete(url + "/" + user);
+            },
             countUsers: function() {
                 return $http.get(url + "/count");
             }

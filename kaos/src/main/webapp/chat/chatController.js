@@ -5,15 +5,15 @@
 var chat = angular.module('chat', []);
 
 chat.controller('ChatController', 
-    ['$scope', '$rootScope', 'UserService', 'TeamService',
-    function($scope, $rootScope, UserService, TeamService){
+    ['$scope', '$rootScope', '$location', 'UserService', 'TeamService', 'MessageService',
+    function($scope, $rootScope, $location, UserService, TeamService, MessageService){
         
         /*Here we can declare any variables or function we want to 
           access from the HTML page. */
         
         $scope.chatStatus = 'none';
         
-        $scope.currentUser = $rootScope.globals.currentUser.username;
+        $scope.currentUser = $rootScope.globals.currentUser;
         
         $scope.currentTeam = null;
         
@@ -26,7 +26,7 @@ chat.controller('ChatController',
                         
         //List of all chat messages
         $scope.log = [{ 
-            text: 'Welcome ' + $scope.currentUser + '!', 
+            text: 'Welcome ' + $scope.currentUser.username + '!', 
             date: new Date(),
             sender: "System", 
             avatar: 'img/system.png'
@@ -38,7 +38,7 @@ chat.controller('ChatController',
             $scope.currentTeam = team;
             //$scope.currentTeamMembers = TeamService.getTeamMembers(currentTeam);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
-            $scope.log = [{         //TeamService.getMessageLogByTeam($scope.currentTeam);
+            $scope.log = [{         //MessageService.getMessageLogByTeam($scope.currentTeam);
                 text: 'Welcome to the chat chanel for ' + team,
                 date: new Date(),
                 sender: 'System',
@@ -49,7 +49,7 @@ chat.controller('ChatController',
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
-            $scope.log = [{         
+            $scope.log = [{         //MessageService.getMessageLogByUser(member);
                 text: 'Welcome to the chat chanel for ' + member,
                 date: new Date(),
                 sender: "system",
@@ -60,14 +60,14 @@ chat.controller('ChatController',
         //This function is called when the user submits text throught the chat box
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
-                $scope.log.push({               //TeamService.sendMessageToTeam($scope.currentTeam, text);
+                $scope.log.push({               //MessageService.sendMessageToTeam($scope.currentTeam, text);
                     text: text,
                     date: new Date(),
-                    sender: $scope.currentUser,
+                    sender: $scope.currentUser.username,
                     avatar: 'img/profile-icon.png'
                 });
             }else if($scope.chatStatus === "private"){
-                 $scope.log.push({               //TODO: XService.sendMessageToUser(user, text);
+                 $scope.log.push({               //TODO: MessageService.sendMessageToUser(user, text);
                     text: text,
                     date: new Date(),
                     sender: $scope.currentUser,
@@ -83,6 +83,14 @@ chat.controller('ChatController',
             }
             document.getElementById("myForm").reset();
         };        
+        
+        $scope.deleteAcc = function(){
+            var check = confirm("Are you shure you want to delete your account?");
+            if(check === true){
+                /*UserService.Delete($rootScope.globals.currentUser);
+                $location.path("#/login");*/
+            }
+        };
 }]);
 
 /*chat.directive('scrollBar', function () {

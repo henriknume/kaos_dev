@@ -13,11 +13,16 @@ body{
     position: relative;
     
     /*esthetical stuff*/
-    background: linear-gradient(to bottom right, #fffd4d, #ffff99);
+    background: linear-gradient(to bottom right, #fffd4d, #ffff9f);
     border:1px solid black;
     border-radius:5px;
     margin: 10px;
     padding: 50px;
+}
+#delete{
+    position:absolute;
+    bottom: 40px;
+    margin: 5px;
 }
 #logout{
     position:absolute;
@@ -33,7 +38,7 @@ body{
     float:right;
     
     /*esthetical stuff*/
-    background: linear-gradient(to bottom right, #afd9ee, #dfd9ee);
+    background: linear-gradient(to bottom right, #afd9ee, #d9f9ee);
     border:1px solid black;
     border-radius:5px;
     margin: 10px;

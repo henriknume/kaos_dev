@@ -4,9 +4,7 @@ angular.module('app').controller('RegisterController',
     ['$scope', 'UserService', '$location', '$rootScope', 'FlashService',
         function ($scope, UserService, $location, $rootScope, FlashService){
 
-            $scope.register = register;
-
-            function register() {
+            $scope.register = function () {
                 $scope.dataLoading = true;
                 UserService.Create($scope.user)
                     .then(function (response) {
@@ -18,7 +16,7 @@ angular.module('app').controller('RegisterController',
                             $scope.dataLoading = false;
                         }
                     });
-            }
+            };
         }
     ]
 );
