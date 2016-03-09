@@ -46,14 +46,22 @@ public class UserResource {
     @Inject
     private Chat chat;
     
-    @GET
+    @POST
     @Path("/login")
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
         public Response findUser(JsonObject json) throws NoSuchAlgorithmException {
+            log.log(Level.INFO, "========================== 1");
             KaosUser u = chat.getUserList().getByLogin(json.getString("login"));
-            if (u != null) {
-                // KOLLA OM LÖSENORDET STÄMMER
+            log.log(Level.INFO, "========================== 2");
+            String passDB = u.getPassword();   // hämtar databas pass
+            String passClient = json.getString("password");   // hämtar skickat pass från json 
+            boolean passStatus = PasswordProtection.checkPassword(passClient, passDB); // kollar om password är samma
+            log.log(Level.INFO, "========================== 3: " + passStatus);
+                if (u != null && passStatus){                                          // som i databasen
+                // Skapar en ny KaosUser som skickats tillbaka med "uncrypt password" 
+                KaosUser uncryptUser = new KaosUser(u.getLogin(),json.getString("password"), u.getEmail());
+                return Response.ok(new KaosUserWrapper(uncryptUser)).build(); // 200 ok
             } else {
                 return Response.noContent().build();  // 204
             }
@@ -62,9 +70,8 @@ public class UserResource {
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response createUser(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
             String salt = PasswordProtection.getSalt();
-            KaosUser user = new KaosUser(json.getString("login"),
-                    PasswordProtection.hashPassword(json.getString("password"), salt) + salt
-                    ,json.getString("email"));
+            String saltPass = PasswordProtection.hashPassword(json.getString("password"), salt) + salt;
+            KaosUser user = new KaosUser(json.getString("login"), saltPass, json.getString("email"));
             chat.getUserList().create(user);
             
             return Response.ok().build();
