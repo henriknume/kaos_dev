@@ -98,7 +98,7 @@ public class UserResource {
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response updateUser(@PathParam(value = "id") String id, JsonObject json) throws NoSuchAlgorithmException {
             String salt = PasswordProtection.getSalt();
-            chat.getUserList().update(new KaosUser(id, PasswordProtection.hashPassword(json.getString("password"), salt) +salt 
+            chat.getUserList().update(new KaosUser(id, PasswordProtection.hashPassword(json.getString("password"), salt) + salt 
                     ,json.getString("email")));
             return Response.ok().build(); // 200
         }
