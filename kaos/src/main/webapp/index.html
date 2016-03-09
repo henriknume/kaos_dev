@@ -5,13 +5,34 @@
     <title>Koasdev's chat</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
     <link property='stylesheet' href="chat/chatStyle.css" rel="stylesheet"/>    
+    
+    
+    <style>
+        .jumbotron {
+            margin-bottom: 0px;
+            background-image: url(img/chaos_banner.png);
+            background-position: 0% 25%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #77DD77;
+        }
+    </style>
 </head>
+
+
 <body>
-    <div id="header">
+    <!--div id="header">
         <h2>Welcome to kaosdev's chat!</h2>     
+    </div-->
+    
+    <div class="jumbotron">
+        <div class="container">
+            <h1>KaosChat</h1>
+            <p>Welcome to kaosdev's chat!</p>
+        </div>
     </div>
     
-    <div class="container">
+    <div class="container ">
         <div class="col-sm-8 col-sm-offset-2">
             <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>            
         </div>
