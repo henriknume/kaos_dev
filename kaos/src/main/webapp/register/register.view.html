@@ -1,12 +1,12 @@
 ﻿<div class="col-md-6 col-md-offset-3">
     <h2>Register</h2>
     <form name="form" ng-submit="register()" role="form">
-        <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
-            <label for="username">
+        <div class="form-group" ng-class="{ 'has-error': form.login.$dirty && form.login.$error.required }">
+            <label for="login">
                 Username
             </label>
-            <input type="text" name="username" id="username" class="form-control" ng-model="user.username" required />
-            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">
+            <input type="text" name="login" id="login" class="form-control" ng-model="user.login" required />
+            <span ng-show="form.login.$dirty && form.login.$error.required" class="help-block">
                 Username is required
             </span>
         </div>        

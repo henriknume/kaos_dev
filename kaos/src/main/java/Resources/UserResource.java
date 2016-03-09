@@ -61,11 +61,13 @@ public class UserResource {
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response createUser(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
+            log.log(Level.INFO, json.getString("login") + json.getString("password") + json.getString("email"));
             String salt = PasswordProtection.getSalt();
             KaosUser user = new KaosUser(json.getString("login"),
                     PasswordProtection.hashPassword(json.getString("password"), salt) + salt
                     ,json.getString("email"));
             chat.getUserList().create(user);
+            
             return Response.ok().build();
         }
 
