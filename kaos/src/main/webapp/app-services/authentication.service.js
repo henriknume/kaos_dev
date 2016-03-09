@@ -14,15 +14,15 @@ function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserSe
 
     return service;
 
-    function Login(username, password, callback) {
+    function Login(user, callback) {
 
         /* Dummy authentication for testing, uses $timeout to simulate api call
          ----------------------------------------------*/
         $timeout(function () {
             var response;
-            UserService.getUserByLogin(username)
-                .success(function(user){
-                    if (user !== null && user.password === password) {
+            UserService.getUserByLogin(user)
+                .success(function(responseUser){
+                    if (responseUser !== null && responseUser.password === user.password) {
                         response = { success: true };
                     } else {
                         response = { success: false, message: 'Username or password is incorrect' };

@@ -14,8 +14,8 @@ app.factory('UserService', ['$http',
             /*findAll: function() {
                 return $http.get(url);
             },*/
-            getUserByLogin: function(login) { //Returns username, email, password
-                return $http.get(url + "/" + login);
+            getUserByLogin: function(user) { //Returns username, email, password
+                return $http.get(url + "/login", user);
             },
             getTeamsByLogin: function(login){
                 return $http.get(url + "/teams/" + login);
