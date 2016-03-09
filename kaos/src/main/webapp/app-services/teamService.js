@@ -12,7 +12,7 @@ angular.module('app').factory('TeamService', ['$http',
                 return $http.get(url);
             },*/
             getTeamByName: function(team) {
-                return $http.get(url + "/" + team);
+                return $http.post(url + "/join", team);
             },
             /*update: function(id, team) {
                 return $http.put(url + "/" + id, team);

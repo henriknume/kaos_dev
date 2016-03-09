@@ -13,21 +13,14 @@ chat.controller('TeamJoinController',
          $scope.run = function(){
             var response;
             
-            TeamService.getTeamByName($scope.team_name)
-            .then(function (team) {
-                    if (team !== null && team.password === $scope.password) {
-                        response = { success: true };
-                    } else {
-                        response = { success: false, message: 'Team does not exist or password is incorrect' };
-                    }
-                    
-                    if (response.success) {
-                     //TODO: Return to main page and enter team chat
-                    } else {
-                        FlashService.Error(response.message);
-                        $scope.dataLoading = false;
-                    }
-            });
+            TeamService.getTeamByName({team_name: $scope.team_name, password: $scope.password, login: $rootScope.globals.currentUser.username})
+            .success(function(){
+                    FlashService.Success('Join successful', true);
+                    //TODO: Return to main page and enter team chat
+                }).error(function(response){
+                    FlashService.Error("An error occurred: " + response.message);
+                    $scope.dataLoading = false;
+                });
         };
     }]
 );

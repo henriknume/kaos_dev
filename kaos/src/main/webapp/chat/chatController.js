@@ -31,7 +31,7 @@ chat.controller('ChatController',
                                 listOfTeams = listOfTeams.replace("]","");
                                 listOfTeams = listOfTeams.split(",");
                                 return listOfTeams;
-                            }).error(function(response){                    
+                            }).error(function(response){  
                                 confirm("An error occurred: " + response.message);
                                 return [];
                             });
