@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 package kaos.core;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +18,9 @@ import kaos.persistence.AbstractDAO;
  */
 @Stateless
 public class TeamList extends AbstractDAO<Team, String> {
+    
+    private final static Logger log = Logger.getAnonymousLogger();
+    
     @PersistenceContext
     private EntityManager em;
     
@@ -40,5 +46,17 @@ public class TeamList extends AbstractDAO<Team, String> {
         else {
             return temp.get(0).getMembers();
         }
+    }
+    public ArrayList<String> getTeamsByUser(String user){
+        String jpql = "select t from Team t";
+        List<Team> l = em.createQuery(jpql, Team.class).getResultList();
+        ArrayList<String> sl = new ArrayList<>();
+        for(Team t : l){
+            for(KaosUser u : t.getMembers()){
+                if(u.getLogin().equals(user))
+                    sl.add(t.getName());
+            }
+        }
+        return sl;
     }
 }

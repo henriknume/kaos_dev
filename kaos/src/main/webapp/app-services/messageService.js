@@ -14,12 +14,12 @@ app.factory('MessageService', ['$http',
             getMessageLogByTeam: function(team){
                 return $http.get(url + "/" + team);
             },
-            sendMessageToTeam: function(team, message){
+            sendMessageToTeam: function(team, sender, message){
                 //Message is javascript object containing text, sender and date
-                return $http.post(url + "/" + team, message);
+                return $http.post(url + "/team/" + team, {sender: sender, message: message});
             },
-            getMessageLogByUser: function(user){
-                return $http.get(url + "/" + user);
+            getMessageLogByUser: function(user1, user2){
+                return $http.get(url + "/user", {user1: user1, user2: user2});
             },
             sendMessageToUser: function(user, message){
                 //Message is javascript object containing text, sender and date

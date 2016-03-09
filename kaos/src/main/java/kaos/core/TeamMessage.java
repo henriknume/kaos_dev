@@ -64,9 +64,9 @@ public class TeamMessage implements Serializable {
     public TeamMessage() {
     }
     
-    public TeamMessage(String text, Date time,KaosUser sender, Team receiver){
+    public TeamMessage(String text,KaosUser sender, Team receiver){
         this.text = text;
-        this.time = time;
+        this.time = new Date();
         this.sender = sender;
         this.receiver = receiver;
         

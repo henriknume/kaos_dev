@@ -48,14 +48,23 @@ public class TeamResource {
     @Inject
     private Chat chat;
 
-    @GET
-    @Path("/log/")
-    @Produces({MediaType.APPLICATION_JSON})
-        public Response findTeam(@PathParam("name") String name,
-                @Context Request request) {
-            Team team = chat.getTeamList().getByTeamName(name);
-            if (team != null) {
-                return Response.ok(new TeamWrapper((team))).build(); // 200 ok!
+    @POST
+    @Path("/join")
+    @Consumes(value = MediaType.APPLICATION_JSON)
+        public Response joinTeam(JsonObject json) throws NoSuchAlgorithmException  {
+            log.log(Level.INFO, "========================== 1");
+            Team t = chat.getTeamList().getByTeamName(json.getString("team_name"));
+            log.log(Level.INFO, "========================== 2");
+            String passDB = t.getPassword();   // hämtar databas pass
+            String passClient = json.getString("password");   // hämtar skickat pass från json 
+            boolean passStatus = PasswordProtection.checkPassword(passClient, passDB); // kollar om password är samma
+            log.log(Level.INFO, "========================== 3: " + passStatus);
+                if (t != null && passStatus){                                          // som i databasen
+                // Skapar en ny KaosUser som skickats tillbaka med "uncrypt password"
+                t.addUser(chat.getUserList().getByLogin(json.getString("login")));
+                chat.getTeamList().update(t);
+                t.setPassword(json.getString("password"));
+                return Response.ok(new TeamWrapper(t)).build(); // 200 ok
             } else {
                 return Response.noContent().build();  // 204
             }
@@ -65,7 +74,7 @@ public class TeamResource {
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response createTeam(JsonObject json)throws NoSuchAlgorithmException  {     // JSON parameter
             String salt = PasswordProtection.getSalt();
-            Team team = new Team(json.getString("name"), PasswordProtection.hashPassword(json.getString("password"), salt) + salt);
+            Team team = new Team(json.getString("team_name"), PasswordProtection.hashPassword(json.getString("password"), salt) + salt);
             chat.getTeamList().create(team);
             return Response.ok().build();
         }

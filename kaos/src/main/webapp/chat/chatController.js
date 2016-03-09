@@ -27,7 +27,7 @@ chat.controller('ChatController',
         $scope.teams = (function(){UserService.getTeamsByLogin($scope.currentUser.username)
                             .success(function(response){
                                 return response.value;
-                            }).error(function(response){                    
+                            }).error(function(response){   
                                 confirm("An error occurred: " + response.message);
                                 return [];
                             });

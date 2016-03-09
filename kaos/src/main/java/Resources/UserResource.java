@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import kaos.core.Chat;
 import kaos.core.KaosUser;
 import kaos.core.PasswordProtection;
+import kaos.core.Team;
 import kaos.core.UserList;
 /**
  *
@@ -60,8 +61,8 @@ public class UserResource {
             log.log(Level.INFO, "========================== 3: " + passStatus);
                 if (u != null && passStatus){                                          // som i databasen
                 // Skapar en ny KaosUser som skickats tillbaka med "uncrypt password" 
-                KaosUser uncryptUser = new KaosUser(u.getLogin(),json.getString("password"), u.getEmail());
-                return Response.ok(new KaosUserWrapper(uncryptUser)).build(); // 200 ok
+                u.setPassword(json.getString("password"));
+                return Response.ok(new KaosUserWrapper(u)).build(); // 200 ok
             } else {
                 return Response.noContent().build();  // 204
             }
@@ -122,4 +123,13 @@ public class UserResource {
             GenericEntity<Collection< KaosUserWrapper>> ge = new GenericEntity<Collection<KaosUserWrapper>>(userWrapped) {};
             return Response.ok(ge).build(); 
      }
+    
+    @GET
+    @Path("/teams/{login}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+        public Response getJoinedTeams(@PathParam(value = "login") String login) {
+            ArrayList<String> l = chat.getTeamList().getTeamsByUser(login);
+            return Response.ok(l.toString()).build(); 
+     }
+        
 }
