@@ -18,7 +18,7 @@ angular.module('app').controller('LoginController',
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
                     $location.path('/');
                 } else {
-                    FlashService.Error(response.message);
+                    FlashService.Error("An error occurred: " + response.message);
                     $scope.dataLoading = false;
                 }
             });

@@ -11,17 +11,21 @@ chat.controller('ChatController',
         /*Here we can declare any variables or function we want to 
           access from the HTML page. */
         
+        //Used for knowing whether user is in chat chanel or not. 
         $scope.chatStatus = 'none';
         
         $scope.currentUser = $rootScope.globals.currentUser;
         
+        //The team chanel currentUser is in right now
         $scope.currentTeam = null;
         
+        //List of members of the team chanel currentUser is in right now
         $scope.currentTeamMembers = null;
         
-        $scope.teams = ['kaosdev', 'slackerz', 'chalmerz']; //UserService.getTeamsByLogin();
+        //List of all teams currentUser has joined
+        $scope.teams = $scope.getTeams($scope.currentUser.username);
         
-        //constant string
+        //Title string displayed in sidebar
         $scope.pm_title = "";
                         
         //List of all chat messages
@@ -30,31 +34,33 @@ chat.controller('ChatController',
             date: new Date(),
             sender: "System", 
             avatar: 'img/system.png'
-            }];
+        }];
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
-            //$scope.currentTeamMembers = TeamService.getTeamMembers(currentTeam);
+            $scope.currentTeamMembers = $scope.getTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
-            $scope.log = [{         //MessageService.getMessageLogByTeam($scope.currentTeam);
+            $scope.log = $scope.getTeamMessageLog(team);
+            /*[{
                 text: 'Welcome to the chat chanel for ' + team,
                 date: new Date(),
                 sender: 'System',
                 avatar: 'img/system.png'             
-            }];
+            }];*/
         };
         
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
-            $scope.log = [{         //MessageService.getMessageLogByUser(member);
+            $scope.log = getUserMessageLog(member);
+            /*[{    
                 text: 'Welcome to the chat chanel for ' + member,
                 date: new Date(),
                 sender: "system",
                 avatar: 'img/system.png'         
-            }];
+            }];*/
         };
         
         //This function is called when the user submits text throught the chat box
@@ -90,6 +96,48 @@ chat.controller('ChatController',
                 /*UserService.Delete($rootScope.globals.currentUser);
                 $location.path("#/login");*/
             }
+        };
+        
+        //***Helper functions used for calling services****//
+        
+        $scope.getTeams = function(username){
+            UserService.getTeamsByLogin(username)
+                .success(function(response){
+                    return response.value;
+                }).error(function(response){                    
+                    confirm("An error occurred: " + response.message);
+                    return [];
+                });
+        };
+        
+        $scope.getTeamMembers = function(team){
+            TeamService.getTeamMembers(team)
+                .success(function(response){
+                    return response.value;
+                }).error(function(response){                    
+                    confirm("An error occurred: " + response.message);
+                    return [];
+                });
+        };
+        
+        $scope.getTeamMessageLog = function(team){
+            MessageService.getMessageLogByTeam(team)
+                .success(function(response){
+                    return response.value;
+                }).error(function(response){                    
+                    confirm("An error occurred: " + response.message);
+                    return [];
+                });
+        };
+        
+        $scope.getUserMessageLog = function(user){
+            MessageService.getMessageLogByUser(user)
+                .success(function(response){
+                    return response.value;
+                }).error(function(response){                    
+                    confirm("An error occurred: " + response.message);
+                    return [];
+                });
         };
 }]);
 
