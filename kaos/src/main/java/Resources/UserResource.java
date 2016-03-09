@@ -128,8 +128,13 @@ public class UserResource {
     @Path("/teams/{login}")
     @Produces(value = {MediaType.APPLICATION_JSON})
         public Response getJoinedTeams(@PathParam(value = "login") String login) {
-            ArrayList<String> l = chat.getTeamList().getTeamsByUser(login);
-            return Response.ok(l.toString()).build(); 
+            ArrayList<Team> l = chat.getTeamList().getTeamsByUser(login);
+            List<TeamWrapper> teamWrapped = new ArrayList<TeamWrapper>();
+                for(Team t : l) {
+                    teamWrapped.add(new TeamWrapper(t));
+        }
+            GenericEntity<Collection< TeamWrapper>> ge = new GenericEntity<Collection<TeamWrapper>>(teamWrapped) {};
+            return Response.ok(ge).build(); 
      }
         
 }

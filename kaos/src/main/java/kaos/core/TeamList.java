@@ -47,16 +47,16 @@ public class TeamList extends AbstractDAO<Team, String> {
             return temp.get(0).getMembers();
         }
     }
-    public ArrayList<String> getTeamsByUser(String user){
+    public ArrayList<Team> getTeamsByUser(String user){
         String jpql = "select t from Team t";
         List<Team> l = em.createQuery(jpql, Team.class).getResultList();
-        ArrayList<String> sl = new ArrayList<>();
+        ArrayList<Team> tl = new ArrayList<>();
         for(Team t : l){
             for(KaosUser u : t.getMembers()){
                 if(u.getLogin().equals(user))
-                    sl.add(t.getName());
+                    tl.add(t);
             }
         }
-        return sl;
+        return tl;
     }
 }
