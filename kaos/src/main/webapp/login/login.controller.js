@@ -13,9 +13,9 @@ angular.module('app').controller('LoginController',
 
         function login() {
             $scope.dataLoading = true;
-            AuthenticationService.Login($scope.username, $scope.password, function (response) {
+            AuthenticationService.Login($scope.user, function (response) {
                 if (response.success) {
-                    AuthenticationService.SetCredentials($scope.username, $scope.password);
+                    AuthenticationService.SetCredentials($scope.user.login, $scope.user.password);
                     $location.path('/');
                 } else {
                     FlashService.Error("An error occurred: " + response.message);

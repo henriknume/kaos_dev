@@ -47,13 +47,13 @@ public class UserResource {
     private Chat chat;
     
     @GET
-    @Path("/{login}")
+    @Path("/login")
+    @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
-        public Response findUser(@PathParam("login") String login,
-                @Context Request request) {
-            KaosUser p = chat.getUserList().getByLogin(login);
-            if (p != null) {
-                return Response.ok(new KaosUserWrapper((p))).build(); // 200 ok!
+        public Response findUser(JsonObject json) throws NoSuchAlgorithmException {
+            KaosUser u = chat.getUserList().getByLogin(json.getString("login"));
+            if (u != null) {
+                // KOLLA OM LÖSENORDET STÄMMER
             } else {
                 return Response.noContent().build();  // 204
             }
@@ -61,7 +61,6 @@ public class UserResource {
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response createUser(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
-            log.log(Level.INFO, json.getString("login") + json.getString("password") + json.getString("email"));
             String salt = PasswordProtection.getSalt();
             KaosUser user = new KaosUser(json.getString("login"),
                     PasswordProtection.hashPassword(json.getString("password"), salt) + salt
