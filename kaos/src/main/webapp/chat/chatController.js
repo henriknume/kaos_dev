@@ -10,6 +10,7 @@ chat.controller('ChatController',
         
         /*Here we can declare any variables or function we want to 
           access from the HTML page. */
+         
         
         //Used for knowing whether user is in chat chanel or not. 
         $scope.chatStatus = 'none';
@@ -23,7 +24,14 @@ chat.controller('ChatController',
         $scope.currentTeamMembers = null;
         
         //List of all teams currentUser has joined
-        $scope.teams = $scope.getTeams($scope.currentUser.username);
+        $scope.teams = (function(){UserService.getTeamsByLogin($scope.currentUser.username)
+                            .success(function(response){
+                                return response.value;
+                            }).error(function(response){                    
+                                confirm("An error occurred: " + response.message);
+                                return [];
+                            });
+                        }());
         
         //Title string displayed in sidebar
         $scope.pm_title = "";        
@@ -94,7 +102,7 @@ chat.controller('ChatController',
         };
         
         //***Helper functions used for calling services****//
-        
+       
         $scope.getTeams = function(username){
             UserService.getTeamsByLogin(username)
                 .success(function(response){
