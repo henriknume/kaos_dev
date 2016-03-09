@@ -24,18 +24,22 @@ chat.controller('ChatController',
         $scope.currentTeamMembers = null;
         
         //List of all teams currentUser has joined
-        $scope.teams = (function(){UserService.getTeamsByLogin($scope.currentUser.username)
-                            .success(function(response){
-                                var listOfTeams = response.value.toString();
-                                listOfTeams = listOfTeams.replace("[","");
-                                listOfTeams = listOfTeams.replace("]","");
-                                listOfTeams = listOfTeams.split(",");
-                                return listOfTeams;
-                            }).error(function(response){  
-                                confirm("An error occurred: " + response.message);
-                                return [];
-                            });
-                        }());
+        $scope.teams = [];
+        
+        UserService.getTeamsByLogin($scope.currentUser.username)
+            .success(function(response){
+                var listOfTeams = response;
+                var listOfTeamNames = [];
+
+                for(var i = 0; i < listOfTeams.length; i++){
+                    listOfTeamNames.push(listOfTeams[i].name);
+                }
+               $scope.teams = listOfTeamNames;
+            }).error(function(response){ 
+                console.log(response); 
+                confirm("An error occurred: " + response.message);
+                $scope.teams = [];
+            });
         
         //Title string displayed in sidebar
         $scope.pm_title = "";        
