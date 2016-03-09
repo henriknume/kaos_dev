@@ -26,8 +26,11 @@ chat.controller('ChatController',
         $scope.teams = $scope.getTeams($scope.currentUser.username);
         
         //Title string displayed in sidebar
-        $scope.pm_title = "";
-                        
+        $scope.pm_title = "";        
+                      
+        //The name of the user that currentUser is chatting with
+        $scope.currentPrivateChat = null;
+        
         //List of all chat messages
         $scope.log = [{ 
             text: 'Welcome ' + $scope.currentUser.username + '!', 
@@ -66,19 +69,11 @@ chat.controller('ChatController',
         //This function is called when the user submits text throught the chat box
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
-                $scope.log.push({               //MessageService.sendMessageToTeam($scope.currentTeam, text);
-                    text: text,
-                    date: new Date(),
-                    sender: $scope.currentUser.username,
-                    avatar: 'img/profile-icon.png'
-                });
+                MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser, text);
+                $scope.log = $scope.getTeamMessageLog($scope.currentTeam);
             }else if($scope.chatStatus === "private"){
-                 $scope.log.push({               //TODO: MessageService.sendMessageToUser(user, text);
-                    text: text,
-                    date: new Date(),
-                    sender: $scope.currentUser,
-                    avatar: 'img/profile-icon.png'
-                });
+                MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser, text);
+                $scope.log = $scope.getUserMessageLog($scope.currentPrivateChat);
             }else if($scope.chatStatus === "none"){
                 $scope.log.push({   
                     text: "You are not in a team chat!",
