@@ -6,17 +6,15 @@ angular.module('app').controller('RegisterController',
 
             $scope.register = function () {
                 $scope.dataLoading = true;
-                UserService.Create($scope.user)
-                    .then(function (response) {
-                        if (response.success) {
-                            FlashService.Success('Registration successful', true);
-                            $location.path('/login');
-                        } else {
-                            FlashService.Error(response.message);
-                            $scope.dataLoading = false;
-                        }
+                UserService.createUser($scope.user)
+                    .success(function(response){
+                        FlashService.Success('Registration successful', true);
+                        $location.path('/login');
+                    }).error(function(response){
+                        FlashService.Error("An errror occurrd: " + response.message);
+                        $scope.dataLoading = false;
                     });
-            };
+            };            
         }
     ]
 );

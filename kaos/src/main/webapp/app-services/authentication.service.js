@@ -20,8 +20,8 @@ function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserSe
          ----------------------------------------------*/
         $timeout(function () {
             var response;
-            UserService.GetByUsername(username)
-                .then(function (user) {
+            UserService.getUserByLogin(username)
+                .success(function(user){
                     if (user !== null && user.password === password) {
                         response = { success: true };
                     } else {
@@ -29,6 +29,17 @@ function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserSe
                     }
                     callback(response);
                 });
+            
+            
+            
+                /*.then(function (user) {
+                    if (user !== null && user.password === password) {
+                        response = { success: true };
+                    } else {
+                        response = { success: false, message: 'Username or password is incorrect' };
+                    }
+                    callback(response);
+                });*/
         }, 1000);
 
         /* Use this for real authentication
