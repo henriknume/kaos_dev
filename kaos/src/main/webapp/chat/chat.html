@@ -13,7 +13,7 @@
         <div>
             <h4>{{pm_title}}</h4>
             <div ng-repeat="member in currentTeamMembers">
-                <div class="btn btn-primary btn-xs" ng-click="enterPrivateChatRoom(member)">{{member}}</div>
+                <div class="btn btn-primary btn-xs" ng-click="enterPrivateChatRoom(member)">{{member.login}}</div>
                 <div style="margin-top:4px;"></div>
             </div>
         </div>        

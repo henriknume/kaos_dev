@@ -70,9 +70,10 @@ chat.controller('ChatController',
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
-            $scope.currentTeamMembers = getTeamMembers(team);
+            $scope.getTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
-            $scope.getTeamMessageLog($scope.currentTeam);
+            $scope.getTeamMessageLog(team);
+            
             
             //Defauls message
             if($scope.log === []){
@@ -105,7 +106,7 @@ chat.controller('ChatController',
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
                 MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser.username, text)
-                .then(function(){$scope.getTeamMessageLog($scope.currentTeam)});
+                .then(function(){$scope.getTeamMessageLog($scope.currentTeam);});
             }else if($scope.chatStatus === "private"){
                 MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser, text);
                 $scope.log = getUserMessageLog($scope.currentPrivateChat);
@@ -140,13 +141,11 @@ chat.controller('ChatController',
                 });
         };
         
-        var getTeamMembers = function(team){
+        $scope.getTeamMembers = function(team){
             TeamService.getTeamMembers(team)
-                .success(function(response){
-                    return response.value;
-                }).error(function(response){                    
-                    confirm("An error occurred: " + response.message);
-                    return [];
+                .then(function(response){
+                    console.log(response.data);
+                    $scope.currentTeamMembers = response.data;
                 });
         };
         
@@ -161,7 +160,7 @@ chat.controller('ChatController',
                     }    
                     $scope.log = messageLog;
             });
-        }
+        };
         
         var getUserMessageLog = function(user){
             MessageService.getMessageLogByUser($scope.currentUser, user)
