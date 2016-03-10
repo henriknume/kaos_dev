@@ -72,6 +72,7 @@ angular.module('chat', []).controller('ChatController',
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
+            $scope.currentPrivateChat = member;
             $scope.getUserMessageLog(member);
             
             //Default message
