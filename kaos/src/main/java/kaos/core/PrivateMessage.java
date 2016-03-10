@@ -6,18 +6,11 @@
 package kaos.core;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.CascadeType;
+import java.sql.Timestamp;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,8 +31,7 @@ private static final long serialVersionUID = 1L;
     private String text;
     @Getter
     @Setter
-    @Temporal(TemporalType.DATE)
-    private Date timestamp;
+    private Timestamp timestamp;
     @Getter
     @Setter
     private KaosUser sender;
@@ -49,12 +41,11 @@ private static final long serialVersionUID = 1L;
 
 
     public PrivateMessage(){
-        
     }
     
     public PrivateMessage(String text, KaosUser sender, KaosUser receiver) {
         this.text = text;
-        this.timestamp = new Date();
+        timestamp = new java.sql.Timestamp(System.currentTimeMillis());
         this.sender = sender;
         this.receiver = receiver;      
     }

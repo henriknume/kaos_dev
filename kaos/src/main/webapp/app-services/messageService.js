@@ -19,11 +19,12 @@ app.factory('MessageService', ['$http',
                 return $http.post(url + "/team/" + team, {sender: sender, message: message});
             },
             getMessageLogByUser: function(user1, user2){
-                return $http.get(url + "/user", {user1: user1, user2: user2});
+                return $http.get(url + "/user/" + user1 + "/" + user2);
             },
-            sendMessageToUser: function(user, sender, message){
+            sendMessageToUser: function(receiver, sender, message){
+
                 //Message is javascript object containing text, sender and date
-                return $http.post(url + "/user/", {user: user, sender: sender, message: message});
+                return $http.post(url + "/user", {receiver: receiver, sender: sender, message: message});
             }
        };
    }

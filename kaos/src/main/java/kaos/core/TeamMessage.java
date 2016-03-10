@@ -5,31 +5,17 @@
  */
 package kaos.core;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
  * @author Davidf
  */
 import java.io.Serializable;
-import java.sql.Time;
-import java.util.Date;
-import javax.persistence.CascadeType;
+import java.sql.Timestamp;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,8 +37,7 @@ public class TeamMessage implements Serializable {
     private String text;
     @Getter
     @Setter
-    @Temporal(TemporalType.DATE)
-    private Date timestamp;
+    private Timestamp timestamp;
     @Getter
     @Setter
     private KaosUser sender;
@@ -60,17 +45,16 @@ public class TeamMessage implements Serializable {
     @Setter
     private Team receiver;
     
-    
     public TeamMessage() {
     }
     
     public TeamMessage(String text,KaosUser sender, Team receiver){
         this.text = text;
-        this.timestamp = new Date();
+        timestamp = new java.sql.Timestamp(System.currentTimeMillis());
         this.sender = sender;
         this.receiver = receiver;
-        
     }
+    
     @Override
     public String toString() {
         return "kaos.core.Message[ id=" + id + ", text=" + text+",timestamp=" + timestamp +"]";

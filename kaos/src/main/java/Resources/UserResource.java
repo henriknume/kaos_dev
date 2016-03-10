@@ -34,7 +34,7 @@ import kaos.core.Team;
 import kaos.core.UserList;
 /**
  *
- * @author Davidf
+ * @author Davidf & uhrj
  */
 @Path("users")
 public class UserResource {
@@ -52,13 +52,10 @@ public class UserResource {
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
         public Response findUser(JsonObject json) throws NoSuchAlgorithmException {
-            log.log(Level.INFO, "========================== 1");
             KaosUser u = chat.getUserList().getByLogin(json.getString("login"));
-            log.log(Level.INFO, "========================== 2");
             String passDB = u.getPassword();   // hämtar databas pass
             String passClient = json.getString("password");   // hämtar skickat pass från json 
             boolean passStatus = PasswordProtection.checkPassword(passClient, passDB); // kollar om password är samma
-            log.log(Level.INFO, "========================== 3: " + passStatus);
                 if (u != null && passStatus){                                          // som i databasen
                 // Skapar en ny KaosUser som skickats tillbaka med "uncrypt password" 
                 u.setPassword(json.getString("password"));

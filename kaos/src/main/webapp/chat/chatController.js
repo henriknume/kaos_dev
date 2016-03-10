@@ -40,7 +40,7 @@ angular.module('chat', []).controller('ChatController',
                 confirm("An error occurred: " + response.message);
                 $scope.teams = [];
             });        
-            
+            /*
         //Start polling
         setInterval(function(){
             if($scope.chatStatus === "team"){
@@ -49,7 +49,7 @@ angular.module('chat', []).controller('ChatController',
                 $scope.log = $scope.getUserMessageLog($scope.currentPrivateChat);                
             }
         }, 1000*5);
-        
+        */
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
@@ -72,8 +72,8 @@ angular.module('chat', []).controller('ChatController',
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
-            $scope.currentPrivateChat = member;
-            $scope.getUserMessageLog(member);
+            $scope.currentPrivateChat = member.login;
+            $scope.getUserMessageLog(member.login);
             
             //Default message
             if($scope.log === []){
@@ -93,7 +93,7 @@ angular.module('chat', []).controller('ChatController',
                     .then(function(){$scope.getTeamMessageLog($scope.currentTeam);});
             }else if($scope.chatStatus === "private"){
                 MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser.username, text)
-                    .then(function(){$scope.getUserMessageLog($scope.currentTeam);});  
+                    .then(function(){$scope.getUserMessageLog($scope.currentPrivateChat);});  
             }else if($scope.chatStatus === "none"){
                 $scope.log.push({   
                     text: "You are not in a team chat!",
@@ -106,7 +106,7 @@ angular.module('chat', []).controller('ChatController',
         };    
        
         $scope.getTeamMembers = function(team){
-            TeamService.getTeamMembers(team)
+            TeamService.getTeamMembers(team, $scope.currentUser.username)
                 .then(function(response){
                     $scope.currentTeamMembers = response.data;
                 });
@@ -126,14 +126,15 @@ angular.module('chat', []).controller('ChatController',
         };
         
         $scope.getUserMessageLog = function(user){
-            MessageService.getMessageLogByUser($scope.currentUser, user)
+            console.log(user);
+            MessageService.getMessageLogByUser($scope.currentUser.username, user)
                 .then(function(response){
                     var messageLog = [];
-                    for(var i = 0; i < response.length; i++){
+                    for(var i = 0; i < response.data.length; i++){
                         messageLog.push(
-                            {text: response[i].text, date:response[i].timestamp, 
-                            sender: response[i].sender.login, avatar:'img/profile-icon.png'});
-                    }                    
+                            {text: response.data[i].text, date:response.data[i].timestamp, 
+                            sender: response.data[i].sender.login, avatar:'img/profile-icon.png'});
+                    }   
                     $scope.log = messageLog;
                 });
         };

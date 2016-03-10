@@ -5,19 +5,14 @@ import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
@@ -34,7 +29,7 @@ import kaos.core.Team;
 
 /**
  *
- * @author Davidf
+ * @author Davidf & uhrj
  * 
  */
 @Path("teams")
@@ -52,14 +47,11 @@ public class TeamResource {
     @Path("/join")
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response joinTeam(JsonObject json) throws NoSuchAlgorithmException  {
-            log.log(Level.INFO, "========================== 1");
             Team t = chat.getTeamList().getByTeamName(json.getString("team_name"));
-            log.log(Level.INFO, "========================== 2");
             String passDB = t.getPassword();   // hämtar databas pass
             String passClient = json.getString("password");   // hämtar skickat pass från json 
             boolean passStatus = PasswordProtection.checkPassword(passClient, passDB); // kollar om password är samma
-            log.log(Level.INFO, "========================== 3: " + passStatus);
-                if (t != null && passStatus){                                          // som i databasen
+                if (passStatus){                                          // som i databasen
                 // Skapar en ny KaosUser som skickats tillbaka med "uncrypt password"
                 t.addUser(chat.getUserList().getByLogin(json.getString("login")));
                 chat.getTeamList().update(t);
@@ -95,7 +87,7 @@ public class TeamResource {
     @Produces(value = {MediaType.APPLICATION_JSON})
         public Response findAll() {
             List<Team> teamList = chat.getTeamList().findAll();
-            List<TeamWrapper> teamWrapped = new ArrayList<TeamWrapper>();
+            List<TeamWrapper> teamWrapped = new ArrayList<>();
                 for(Team t : teamList) {
                     teamWrapped.add(new TeamWrapper(t));
         }
@@ -104,19 +96,16 @@ public class TeamResource {
      }
         
     @GET
-    @Path("/members/{teamname}")
+    @Path("/members/{teamname}/{user}")
     @Produces({MediaType.APPLICATION_JSON})
-        public Response findMembers(@PathParam("teamname") String team) {
+        public Response findMembers(@PathParam("teamname") String team, @PathParam("user") String user) {
             List<KaosUser> l = chat.getTeamList().getMembers(team);
-            if (l != null) {
-                List<KaosUserWrapper> userWrapped = new ArrayList<KaosUserWrapper>();
-                for(KaosUser u : l) {
-                    userWrapped.add(new KaosUserWrapper(u));
-                }
-                GenericEntity<Collection< KaosUserWrapper>> ge = new GenericEntity<Collection<KaosUserWrapper>>(userWrapped) {};
-                return Response.ok(ge).build(); // 200 ok
-            } else {
-                return Response.noContent().build();  // 204
+            l.remove(chat.getUserList().getByLogin(user));
+            List<KaosUserWrapper> userWrapped = new ArrayList<>();
+            for(KaosUser u : l) {
+                userWrapped.add(new KaosUserWrapper(u));
             }
+            GenericEntity<Collection< KaosUserWrapper>> ge = new GenericEntity<Collection<KaosUserWrapper>>(userWrapped) {};
+            return Response.ok(ge).build(); // 200 ok
     }
 }

@@ -5,6 +5,7 @@
  */
 package kaos.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,6 +25,7 @@ public class PrivateMessageList extends AbstractDAO<PrivateMessage, Long>{
         super(PrivateMessage.class);
     }
 
+    @Override
     public EntityManager getEntityManager() {
         return em;
     }
@@ -41,4 +43,8 @@ public class PrivateMessageList extends AbstractDAO<PrivateMessage, Long>{
         return em.createQuery(jpql, PrivateMessage.class).setParameter("receiver", receiver).getResultList();  
     }
     
+    public List<PrivateMessage> getUserConversation(KaosUser user1, KaosUser user2){
+        String jpql = "select m from PrivateMessage m where m.receiver = :user1 and m.sender = :user2 or m.receiver = :user2 and m.sender = :user1 order by m.timestamp";
+        return em.createQuery(jpql, PrivateMessage.class).setParameter("user1", user1).setParameter("user2", user2).getResultList();
+    }
 }

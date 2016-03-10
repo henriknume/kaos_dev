@@ -17,8 +17,8 @@ angular.module('app').factory('TeamService', ['$http',
             /*update: function(id, team) {
                 return $http.put(url + "/" + id, team);
             },*/
-            getTeamMembers: function(team){
-                return $http.get(url + "/members/" + team);
+            getTeamMembers: function(team, user){
+                return $http.get(url + "/members/" + team + "/" + user);
             },
             createTeam: function(team) {
                 return $http.post(url, team);

@@ -30,11 +30,12 @@ import javax.inject.Inject;
 import kaos.core.Chat;
 import kaos.core.KaosUser;
 import kaos.core.PasswordProtection;
+import kaos.core.PrivateMessage;
 import kaos.core.TeamMessage;
 import kaos.core.UserList;
 /**
  *
- * @author Davidf
+ * @author Davidf & uhrj
  */
 @Path("messages")
 public class MessageResource {
@@ -69,32 +70,28 @@ public class MessageResource {
             GenericEntity<Collection< TeamMessageWrapper>> ge = new GenericEntity<Collection<TeamMessageWrapper>>(teamMessageWrapped) {};
             return Response.ok(ge).build(); 
      }
-/*
+
     @POST
     @Path("/user")
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response createMessage(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
-            String salt = PasswordProtection.getSalt();
-            KaosUser user = new KaosUser(json.getString("login"),
-                    PasswordProtection.hashPassword(json.getString("password"), salt) + salt
-                    ,json.getString("email"));
-            chat.getUserList().create(user);
-            
-            return Response.ok().build();
+           PrivateMessage pm = new PrivateMessage(json.getString("message"), chat.getUserList().getByLogin(json.getString("sender")), chat.getUserList().getByLogin(json.getString("receiver")));
+           chat.getPrivateMessageList().create(pm);
+           return Response.ok().build();
         }
         
 
       
-     @GET
-     @Path("/user")
-     @Consumes(value = {MediaType.APPLICATION_JSON})
-     @Produces({MediaType.APPLICATION_JSON})
-        public Response findAllMessagesUser(JsonObject json)throws NoSuchAlgorithmException  {
-            
-            String login1 = json.getString("user1");
-            String login2 = json.getString("user2");
-            log.log(Level.INFO, login1 + "OCH!!!" + login2);
-            return Response.ok().build();
-     }
-    */ 
+    @GET
+    @Path("/user/{user1}/{user2}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+        public Response findAllMessagesUser(@PathParam(value = "user1") String user1, @PathParam(value = "user2") String user2)throws NoSuchAlgorithmException  {
+            List<PrivateMessage> l = chat.getPrivateMessageList().getUserConversation(chat.getUserList().getByLogin(user1), chat.getUserList().getByLogin(user2));
+            List<PrivateMessageWrapper> privateMessageWrapped = new ArrayList<>();
+                for(PrivateMessage pm : l) {
+                    privateMessageWrapped.add(new PrivateMessageWrapper(pm));
+        }
+            GenericEntity<Collection<PrivateMessageWrapper>> ge = new GenericEntity<Collection<PrivateMessageWrapper>>(privateMessageWrapped) {};
+            return Response.ok(ge).build(); 
+     } 
 }
