@@ -55,7 +55,7 @@ chat.controller('ChatController',
                 confirm("An error occurred: " + response.message);
                 $scope.teams = [];
             });        
-        
+        /*
         //Start polling
         setInterval(function(){
             if($scope.chatStatus === "team"){
@@ -64,7 +64,7 @@ chat.controller('ChatController',
                 getUserMessageLog($scope.currentPrivateChat);                
             }
         }, 1000*5);
-        
+        */
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
@@ -104,7 +104,7 @@ chat.controller('ChatController',
         //This function is called when the user submits text throught the chat box
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
-                MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser, text);
+                MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser.username, text);
                 $scope.log = getTeamMessageLog($scope.currentTeam);
             }else if($scope.chatStatus === "private"){
                 MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser, text);

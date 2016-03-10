@@ -16,6 +16,7 @@ app.factory('MessageService', ['$http',
             },
             sendMessageToTeam: function(team, sender, message){
                 //Message is javascript object containing text, sender and date
+                console.log(team+sender+message);
                 return $http.post(url + "/team/" + team, {sender: sender, message: message});
             },
             getMessageLogByUser: function(user1, user2){
