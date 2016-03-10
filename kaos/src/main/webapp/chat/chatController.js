@@ -36,11 +36,10 @@ angular.module('chat', []).controller('ChatController',
                 }
                $scope.teams = listOfTeamNames;
             }).error(function(response){ 
-                console.log(response); 
                 confirm("An error occurred: " + response.message);
                 $scope.teams = [];
             });        
-            /*
+            
         //Start polling
         setInterval(function(){
             if($scope.chatStatus === "team"){
@@ -49,7 +48,7 @@ angular.module('chat', []).controller('ChatController',
                 $scope.log = $scope.getUserMessageLog($scope.currentPrivateChat);                
             }
         }, 1000*5);
-        */
+        
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
@@ -126,7 +125,6 @@ angular.module('chat', []).controller('ChatController',
         };
         
         $scope.getUserMessageLog = function(user){
-            console.log(user);
             MessageService.getMessageLogByUser($scope.currentUser.username, user)
                 .then(function(response){
                     var messageLog = [];
