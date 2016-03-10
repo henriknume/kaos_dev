@@ -24,22 +24,7 @@ chat.controller('ChatController',
         $scope.currentTeamMembers = null;
         
         //List of all teams currentUser has joined
-        $scope.teams = [];
-        
-        UserService.getTeamsByLogin($scope.currentUser.username)
-            .success(function(response){
-                var listOfTeams = response;
-                var listOfTeamNames = [];
-
-                for(var i = 0; i < listOfTeams.length; i++){
-                    listOfTeamNames.push(listOfTeams[i].name);
-                }
-               $scope.teams = listOfTeamNames;
-            }).error(function(response){ 
-                console.log(response); 
-                confirm("An error occurred: " + response.message);
-                $scope.teams = [];
-            });
+        $scope.teams = [];       
         
         //Title string displayed in sidebar
         $scope.pm_title = "";        
@@ -54,42 +39,76 @@ chat.controller('ChatController',
             sender: "System", 
             avatar: 'img/system.png'
         }];
+    
+        //Code to initialize list of teams
+        UserService.getTeamsByLogin($scope.currentUser.username)
+            .success(function(response){
+                var listOfTeams = response;
+                var listOfTeamNames = [];
+
+                for(var i = 0; i < listOfTeams.length; i++){
+                    listOfTeamNames.push(listOfTeams[i].name);
+                }
+               $scope.teams = listOfTeamNames;
+            }).error(function(response){ 
+                console.log(response); 
+                confirm("An error occurred: " + response.message);
+                $scope.teams = [];
+            });        
+        
+        //Start polling
+        setInterval(function(){
+            if($scope.chatStatus === "team"){
+                getTeamMessageLog($scope.currentTeam);
+            }else if($scope.chatStatus === "private"){
+                getUserMessageLog($scope.currentPrivateChat);                
+            }
+        }, 1000*5);
+        
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
-            $scope.currentTeamMembers = $scope.getTeamMembers(team);
+            $scope.currentTeamMembers = getTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
-            $scope.log = $scope.getTeamMessageLog(team);
-            /*[{
+            $scope.log = getTeamMessageLog(team);
+            
+            //Defauls message
+            if($scope.log === []){
+                $scope.log = [{
                 text: 'Welcome to the chat chanel for ' + team,
                 date: new Date(),
                 sender: 'System',
                 avatar: 'img/system.png'             
-            }];*/
+                }];
+            }
         };
         
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
             $scope.log = getUserMessageLog(member);
-            /*[{    
-                text: 'Welcome to the chat chanel for ' + member,
-                date: new Date(),
-                sender: "system",
-                avatar: 'img/system.png'         
-            }];*/
+            
+            //Defauls message
+            if($scope.log === []){
+                $scope.log = [{    
+                    text: 'Welcome to the chat chanel for ' + member,
+                    date: new Date(),
+                    sender: "system",
+                    avatar: 'img/system.png'         
+                }];
+            }
         };
         
         //This function is called when the user submits text throught the chat box
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
                 MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser, text);
-                $scope.log = $scope.getTeamMessageLog($scope.currentTeam);
+                $scope.log = getTeamMessageLog($scope.currentTeam);
             }else if($scope.chatStatus === "private"){
                 MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser, text);
-                $scope.log = $scope.getUserMessageLog($scope.currentPrivateChat);
+                $scope.log = getUserMessageLog($scope.currentPrivateChat);
             }else if($scope.chatStatus === "none"){
                 $scope.log.push({   
                     text: "You are not in a team chat!",
@@ -111,7 +130,7 @@ chat.controller('ChatController',
         
         //***Helper functions used for calling services****//
        
-        $scope.getTeams = function(username){
+        var getTeams = function(username){
             UserService.getTeamsByLogin(username)
                 .success(function(response){
                     return response.value;
@@ -121,7 +140,7 @@ chat.controller('ChatController',
                 });
         };
         
-        $scope.getTeamMembers = function(team){
+        var getTeamMembers = function(team){
             TeamService.getTeamMembers(team)
                 .success(function(response){
                     return response.value;
@@ -131,7 +150,7 @@ chat.controller('ChatController',
                 });
         };
         
-        $scope.getTeamMessageLog = function(team){
+        var getTeamMessageLog = function(team){
             MessageService.getMessageLogByTeam(team)
                 .success(function(response){
                     return response.value;
@@ -141,8 +160,8 @@ chat.controller('ChatController',
                 });
         };
         
-        $scope.getUserMessageLog = function(user){
-            MessageService.getMessageLogByUser(user)
+        var getUserMessageLog = function(user){
+            MessageService.getMessageLogByUser($scope.currentUser, user)
                 .success(function(response){
                     return response.value;
                 }).error(function(response){                    
@@ -151,21 +170,3 @@ chat.controller('ChatController',
                 });
         };
 }]);
-
-/*chat.directive('scrollBar', function () {
-  return {
-    restrict: 'A',
-    replace: false,
-    scope: {
-      scrollBar: "="
-    },
-    link: function (scope, element) {
-      scope.$watchCollection('scrollBar', function (newValue) {
-        if (newValue)
-        {
-          $(element).scrollTop($(element)[0].scrollHeight);
-        }
-      });
-    }
-  };
-});*/
