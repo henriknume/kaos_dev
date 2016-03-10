@@ -3,8 +3,8 @@
 var chat = angular.module('chat');
 
 chat.controller('TeamJoinController', 
-    ['$scope', '$rootScope', 'UserService', 'TeamService', 'FlashService',
-    function($scope, $rootScope, UserService, TeamService, FlashService){
+    ['$scope', '$rootScope', '$location', 'UserService', 'TeamService', 'FlashService',
+    function($scope, $rootScope, $location, UserService, TeamService, FlashService){
         
         $scope.title = "Search for a team to join";
         
@@ -16,7 +16,7 @@ chat.controller('TeamJoinController',
             TeamService.getTeamByName({team_name: $scope.team_name, password: $scope.password, login: $rootScope.globals.currentUser.username})
             .success(function(){
                     FlashService.Success('Join successful', true);
-                    //TODO: Return to main page and enter team chat
+                    $location.path('/');
                 }).error(function(response){
                     FlashService.Error("An error occurred: " + response.message);
                     $scope.dataLoading = false;
