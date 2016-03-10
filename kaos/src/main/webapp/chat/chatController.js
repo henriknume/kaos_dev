@@ -59,9 +59,9 @@ chat.controller('ChatController',
         //Start polling
         setInterval(function(){
             if($scope.chatStatus === "team"){
-                getTeamMessageLog($scope.currentTeam);
+                $scope.log = getTeamMessageLog($scope.currentTeam);
             }else if($scope.chatStatus === "private"){
-                getUserMessageLog($scope.currentPrivateChat);                
+                $scope.log = getUserMessageLog($scope.currentPrivateChat);                
             }
         }, 1000*5);
         */
@@ -153,7 +153,13 @@ chat.controller('ChatController',
         var getTeamMessageLog = function(team){
             MessageService.getMessageLogByTeam(team)
                 .success(function(response){
-                    return response.value;
+                    var messageLog = [];
+                    for(var i = 0; i < response.length; i++){
+                        messageLog.push(
+                                {text: response[i].text, date:response[i].timestamp, 
+                            sender: response[i].sender.login, avatar:'img/profile-icon.png'});
+                    }                    
+                    return messageLog;
                 }).error(function(response){                    
                     confirm("An error occurred: " + response.message);
                     return [];
@@ -163,7 +169,13 @@ chat.controller('ChatController',
         var getUserMessageLog = function(user){
             MessageService.getMessageLogByUser($scope.currentUser, user)
                 .success(function(response){
-                    return response.value;
+                    var messageLog = [];
+                    for(var i = 0; i < response.length; i++){
+                        messageLog.push(
+                                {text: response[i].text, date:response[i].timestamp, 
+                            sender: response[i].sender.login, avatar:'img/profile-icon.png'});
+                    }                    
+                    return messageLog;
                 }).error(function(response){                    
                     confirm("An error occurred: " + response.message);
                     return [];
