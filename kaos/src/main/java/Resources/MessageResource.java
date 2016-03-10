@@ -52,7 +52,6 @@ public class MessageResource {
     @Path("/team/{team}")
     @Consumes(value = MediaType.APPLICATION_JSON)
         public Response createTeamMessage(@PathParam(value = "team") String team, JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
-           System.out.println("AHBISDASD" + team + json.getString("message")+json.getString("sender"));
            TeamMessage tm = new TeamMessage(json.getString("message"), chat.getUserList().getByLogin(json.getString("sender")), chat.getTeamList().getByTeamName(team));
            chat.getTeamMessageList().create(tm);
            return Response.ok().build();
@@ -63,7 +62,6 @@ public class MessageResource {
     @Produces(value = {MediaType.APPLICATION_JSON})
         public Response findAllTeamMessages(@PathParam(value = "team") String team) {
             List<TeamMessage> l = chat.getTeamMessageList().getByReceiver(chat.getTeamList().getByTeamName(team));
-            
             List<TeamMessageWrapper> teamMessageWrapped = new ArrayList<>();
                 for(TeamMessage tm : l) {
                     teamMessageWrapped.add(new TeamMessageWrapper(tm));

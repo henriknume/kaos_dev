@@ -68,12 +68,14 @@ chat.controller('ChatController',
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
+            console.log("entering chat room");
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
             $scope.currentTeamMembers = getTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
             $scope.log = getTeamMessageLog(team);
-            
+            console.log("printing log");
+            console.log($scope.log);
             //Defauls message
             if($scope.log === []){
                 $scope.log = [{
@@ -158,7 +160,8 @@ chat.controller('ChatController',
                         messageLog.push(
                                 {text: response[i].text, date:response[i].timestamp, 
                             sender: response[i].sender.login, avatar:'img/profile-icon.png'});
-                    }                    
+                    }
+                    console.log(messageLog);
                     return messageLog;
                 }).error(function(response){                    
                     confirm("An error occurred: " + response.message);
