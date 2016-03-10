@@ -1,48 +1,81 @@
-<div>
-    <div id="sidebar" style="padding:5px;">
-        <div>
-            <p><a id='create' href="#/create" class="btn btn-success  btl-lg"><b>Create new team</b></a></p>  
-            <p><a id='join' href="#/join" class="btn btn-success  btl-lg"><b>Join team</b></a></p>  
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand" id="create">
+                <a href="#/create">Create Team</a>
+            </li>
+            <li class="sidebar-brand" id="join">
+                <a href="#/join">Join Team</a>
+            </li>
+            <li class="sidebar-brand">
+                <a href="#">My Teams</a>
+            </li>
             
-            <h4>Click on one of your following teams to start chatting!</h4>
-            <div ng-repeat="team in teams">
-                <div class="btn btn-primary btn-xs" ng-click="enterChatRoom(team)">{{team}}</div>
-                <div style="margin-top:4px;"></div>
-            </div>
-        </div>        
-        <div>
-            <h4>{{pm_title}}</h4>
-            <div ng-repeat="member in currentTeamMembers">
-                <div class="btn btn-primary btn-xs" ng-click="enterPrivateChatRoom(member)">{{member}}</div>
-                <div style="margin-top:4px;"></div>
-            </div>
-        </div>        
-        <p><a id='delete' ng-click="deleteAcc()" class="btn btn-danger  btn-xs">Delete account</a></p>  
-        <p><a id='logout' href="#/login" class="btn btn-default  btl-lg">Log out</a></p>  
+            <!-- Repeat all teams -->
+            <li ng-repeat="team in teams">  
+                <a href="#" ng-click="enterChatRoom(team)">{{team}}</a>
+            </li>
+            <!--if no teams show  -->
+            <li ng-show="!teams.length">
+                <a href="#">No teams available</a>
+            </li>
+            
+            
+            
+            <!--  Members -->
+            <li class="sidebar-brand">
+                <a href="#">Members</a>
+            </li>
+            <!-- Repeat all Members -->
+            <li ng-repeat="member in currentTeamMembers">  
+                <a href="#" ng-click="enterPrivateChatRoom(member)">{{member}}</a>
+            </li>
+            
+
+            <li class="sidebar-brand">
+                <a href="#">Delete Team</a>
+            </li>
+            <li class="sidebar-brand">
+                <a href="#">Log out</a>
+            </li>
+        </ul>
     </div>
+    <!-- /#sidebar-wrapper -->
 
-    <div id="chat_window" style="padding:5px;">
-        <div id="chat_log"> 
-            <!--This is where all messages will appear-->            
-            <div ng-repeat="message in log">
-                <div class="chat_message">
-                    <img ng-src="{{message.avatar}}" style="display: inline-block" />
-                    <p class="chat_text" style="display: inline-block" ><b>{{message.text}}</b></p>
-                    <p class="chat_date"><em>{{message.date | date:'yyyy-MM-dd HH:mm'}}</em></p>
-                    <p style="margin-left: 7px">{{message.sender}}</p>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div style="float:left;width:800px;overflow-x:hidden; overflow-y: auto; height:600px">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1>
+                        <h1>Simple Sidebar</h1> 
+                    </div>
                 </div>
-            </div>   
+            </div> 
         </div>
-        <div id="chatbox" class="input-group">
-            <form ng-submit="writeMessage(text)" id="myForm">
-                <input ng-model="text" class="form-control input-lg" placeholder="Type your message here..." />                
-            </form>
-
-            <span class="input-group-btn">
-                <button ng-click="writeMessage(text)" class="btn btn-warning btn-lg" id="btn-chat">
-                    Send
-                </button>
-            </span>
-        </div>
-    </div>  
+    </div>
+    <!-- /#page-content-wrapper -->
 </div>
+<!-- /#wrapper -->
+    
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
