@@ -55,24 +55,25 @@ chat.controller('ChatController',
                 confirm("An error occurred: " + response.message);
                 $scope.teams = [];
             });        
-        
+        /*
         //Start polling
         setInterval(function(){
             if($scope.chatStatus === "team"){
-                getTeamMessageLog($scope.currentTeam);
+                $scope.log = getTeamMessageLog($scope.currentTeam);
             }else if($scope.chatStatus === "private"){
-                getUserMessageLog($scope.currentPrivateChat);                
+                $scope.log = getUserMessageLog($scope.currentPrivateChat);                
             }
         }, 1000*5);
-        
+        */
         
         //This function is called when the user selects a team chat
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
-            $scope.currentTeamMembers = getTeamMembers(team);
+            $scope.getTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
-            $scope.log = getTeamMessageLog(team);
+            $scope.getTeamMessageLog(team);
+            
             
             //Defauls message
             if($scope.log === []){
@@ -104,8 +105,8 @@ chat.controller('ChatController',
         //This function is called when the user submits text throught the chat box
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
-                MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser, text);
-                $scope.log = getTeamMessageLog($scope.currentTeam);
+                MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser.username, text)
+                .then(function(){$scope.getTeamMessageLog($scope.currentTeam);});
             }else if($scope.chatStatus === "private"){
                 MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser, text);
                 $scope.log = getUserMessageLog($scope.currentPrivateChat);
@@ -140,30 +141,37 @@ chat.controller('ChatController',
                 });
         };
         
-        var getTeamMembers = function(team){
+        $scope.getTeamMembers = function(team){
             TeamService.getTeamMembers(team)
-                .success(function(response){
-                    return response.value;
-                }).error(function(response){                    
-                    confirm("An error occurred: " + response.message);
-                    return [];
+                .then(function(response){
+                    console.log(response.data);
+                    $scope.currentTeamMembers = response.data;
                 });
         };
         
-        var getTeamMessageLog = function(team){
+        $scope.getTeamMessageLog = function(team){
             MessageService.getMessageLogByTeam(team)
-                .success(function(response){
-                    return response.value;
-                }).error(function(response){                    
-                    confirm("An error occurred: " + response.message);
-                    return [];
-                });
+                .then(function(response){
+                    var messageLog = [];
+                    for(var i = 0; i < response.data.length; i++){
+                        messageLog.push(
+                            {text: response.data[i].text, date:response.data[i].timestamp, 
+                            sender: response.data[i].sender.login, avatar:'img/profile-icon.png'});
+                    }    
+                    $scope.log = messageLog;
+            });
         };
         
         var getUserMessageLog = function(user){
             MessageService.getMessageLogByUser($scope.currentUser, user)
                 .success(function(response){
-                    return response.value;
+                    var messageLog = [];
+                    for(var i = 0; i < response.length; i++){
+                        messageLog.push(
+                                {text: response[i].text, date:response[i].timestamp, 
+                            sender: response[i].sender.login, avatar:'img/profile-icon.png'});
+                    }                    
+                    return messageLog;
                 }).error(function(response){                    
                     confirm("An error occurred: " + response.message);
                     return [];

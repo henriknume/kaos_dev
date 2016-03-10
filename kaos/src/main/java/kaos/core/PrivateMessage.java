@@ -39,7 +39,7 @@ private static final long serialVersionUID = 1L;
     @Getter
     @Setter
     @Temporal(TemporalType.DATE)
-    private Date time;
+    private Date timestamp;
     @Getter
     @Setter
     private KaosUser sender;
@@ -52,9 +52,9 @@ private static final long serialVersionUID = 1L;
         
     }
     
-    public PrivateMessage(String text, Date time, KaosUser sender, KaosUser receiver) {
+    public PrivateMessage(String text, KaosUser sender, KaosUser receiver) {
         this.text = text;
-        this.time = time;
+        this.timestamp = new Date();
         this.sender = sender;
         this.receiver = receiver;      
     }

@@ -47,14 +47,29 @@ public class MessageResource {
     @Inject
     private Chat chat;
     
-/*
+
     @POST
     @Path("/team/{team}")
     @Consumes(value = MediaType.APPLICATION_JSON)
-        public Response createMessage(@PathParam(value = "team") String team, JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
-           TeamMessage tm = new TeamMessage();
+        public Response createTeamMessage(@PathParam(value = "team") String team, JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
+           TeamMessage tm = new TeamMessage(json.getString("message"), chat.getUserList().getByLogin(json.getString("sender")), chat.getTeamList().getByTeamName(team));
+           chat.getTeamMessageList().create(tm);
+           return Response.ok().build();
         }
-
+        
+    @GET
+    @Path("/{team}")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+        public Response findAllTeamMessages(@PathParam(value = "team") String team) {
+            List<TeamMessage> l = chat.getTeamMessageList().getByReceiver(chat.getTeamList().getByTeamName(team));
+            List<TeamMessageWrapper> teamMessageWrapped = new ArrayList<>();
+                for(TeamMessage tm : l) {
+                    teamMessageWrapped.add(new TeamMessageWrapper(tm));
+        }
+            GenericEntity<Collection< TeamMessageWrapper>> ge = new GenericEntity<Collection<TeamMessageWrapper>>(teamMessageWrapped) {};
+            return Response.ok(ge).build(); 
+     }
+/*
     @POST
     @Path("/user")
     @Consumes(value = MediaType.APPLICATION_JSON)
@@ -68,18 +83,7 @@ public class MessageResource {
             return Response.ok().build();
         }
         
-    @GET
-    @Path("/team")
-    @Produces(value = {MediaType.APPLICATION_JSON})
-        public Response findAllPrivate() {
-            List<KaosUser> kaosUserList = chat.getUserList().findAll();
-            List<KaosUserWrapper> userWrapped = new ArrayList<KaosUserWrapper>();
-                for(KaosUser p : kaosUserList) {
-                    userWrapped.add(new KaosUserWrapper(p));
-        }
-            GenericEntity<Collection< KaosUserWrapper>> ge = new GenericEntity<Collection<KaosUserWrapper>>(userWrapped) {};
-            return Response.ok(ge).build(); 
-     }
+
       
      @GET
      @Path("/user")

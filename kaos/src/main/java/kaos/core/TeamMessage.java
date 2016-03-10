@@ -52,7 +52,7 @@ public class TeamMessage implements Serializable {
     @Getter
     @Setter
     @Temporal(TemporalType.DATE)
-    private Date time;
+    private Date timestamp;
     @Getter
     @Setter
     private KaosUser sender;
@@ -66,14 +66,14 @@ public class TeamMessage implements Serializable {
     
     public TeamMessage(String text,KaosUser sender, Team receiver){
         this.text = text;
-        this.time = new Date();
+        this.timestamp = new Date();
         this.sender = sender;
         this.receiver = receiver;
         
     }
     @Override
     public String toString() {
-        return "kaos.core.Message[ id=" + id + ", text=" + text+",time=" + time +"]";
+        return "kaos.core.Message[ id=" + id + ", text=" + text+",timestamp=" + timestamp +"]";
     }
     
     @Override
