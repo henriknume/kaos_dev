@@ -1,25 +1,25 @@
-body{    
+/*body{    
     background: linear-gradient(to right, #eee, #fff);
 }
 #header{
     padding: 5px 0px 5px 120px;    
     background: linear-gradient(to right, #d88, #fff);
-}
-#sidebar{
+}*/
+/*#sidebar{
     width:300px;
     height:550px;
     float:left;
     display:inline-block;
     position: relative;
     
-    /*esthetical stuff*/
+    esthetical stuff
     background: linear-gradient(to bottom right, #fffd4d, #ffff9f);
     border:1px solid black;
     border-radius:5px;
     margin: 10px;
     padding: 50px;
-}
-#delete{
+}*/
+/*#delete{
     position:absolute;
     bottom: 40px;
     margin: 5px;
@@ -29,37 +29,38 @@ body{
     height:35px;
     bottom: 0px;
     margin: 5px;
-}
+}*/
 #chat_window{
-    width:800px;
+/*    width:800px;
     height:550px;
     display:inline-block;
     position: relative;
     float:right;
     
-    /*esthetical stuff*/
-    background: linear-gradient(to bottom right, #afd9ee, #d9f9ee);
+    esthetical stuff
     border:1px solid black;
     border-radius:5px;
-    margin: 10px;
+    margin: 10px;*/
+/*    background: grey;*/
 }
 #chat_log{
-    overflow: auto;
     height:450px;
-    margin: 10px;
+    width:800px;
+    overflow-x:hidden;
+    overflow-y: auto;
 }
 #chatbox{
-    position: absolute;
+/*    position: absolute;*/
     bottom: 0;
     margin: 10px;
 }
 .chat_message{    
     float: left;
-    width: 740px;
+    width: 500px;
     padding: 4px;
     margin: 2px;
     
-    background-color: white;
+/*    background-color: pink;*/
     border: 1px solid #9f999e;
     border-radius: 15px;
 }
