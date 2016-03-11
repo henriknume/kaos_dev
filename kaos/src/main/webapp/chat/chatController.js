@@ -20,9 +20,7 @@ angular.module('chat', []).controller('ChatController',
         
         $scope.log = [{ //List of all chat messages
             text: 'Welcome ' + $scope.currentUser.username + '!', 
-            date: new Date(),
-            sender: "System", 
-            avatar: 'img/system.png'
+            date: new Date(), sender: "System", avatar: 'img/system.png'
         }];
     
         //Code to initialize list of teams
@@ -56,33 +54,13 @@ angular.module('chat', []).controller('ChatController',
             $scope.getTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
             $scope.getTeamMessageLog(team);
-                        
-            //Default message
-            if($scope.log === []){
-                $scope.log = [{
-                text: 'Welcome to the chat chanel for ' + team,
-                date: new Date(),
-                sender: 'System',
-                avatar: 'img/system.png'             
-                }];
-            }
         };
         
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
             $scope.currentPrivateChat = member.login;
-            $scope.getUserMessageLog(member.login);
-            
-            //Default message
-            if($scope.log === []){
-                $scope.log = [{    
-                    text: 'Welcome to the chat chanel for ' + member,
-                    date: new Date(),
-                    sender: "system",
-                    avatar: 'img/system.png'         
-                }];
-            }
+            $scope.getUserMessageLog(member.login);            
         };
         
         //This function is called when the user submits text throught the chat box
@@ -95,10 +73,8 @@ angular.module('chat', []).controller('ChatController',
                     .then(function(){$scope.getUserMessageLog($scope.currentPrivateChat);});  
             }else if($scope.chatStatus === "none"){
                 $scope.log.push({   
-                    text: "You are not in a team chat!",
-                    date: new Date(),
-                    sender: "System",
-                    avatar: 'img/system.png'
+                    text: "You are not in a team chat!", date: new Date(),
+                    sender: "System", avatar: 'img/system.png'
                 });
             }
             document.getElementById("myForm").reset();
@@ -119,8 +95,14 @@ angular.module('chat', []).controller('ChatController',
                         messageLog.push(
                             {text: response.data[i].text, date:response.data[i].timestamp, 
                             sender: response.data[i].sender.login, avatar:'img/profile-icon.png'});
-                    }    
-                    $scope.log = messageLog;
+                    }   
+                    if(messageLog.length === 0){ //Default message
+                        $scope.log = [{
+                        text: 'Welcome to the chat chanel for ' + team,
+                        date: new Date(), sender: 'System', avatar: 'img/system.png'             
+                        }];
+                    }else
+                        $scope.log = messageLog;
             });
         };
         
@@ -132,8 +114,14 @@ angular.module('chat', []).controller('ChatController',
                         messageLog.push(
                             {text: response.data[i].text, date:response.data[i].timestamp, 
                             sender: response.data[i].sender.login, avatar:'img/profile-icon.png'});
-                    }   
-                    $scope.log = messageLog;
+                    }                                         
+                    if(messageLog.length === 0){ //Default message
+                        $scope.log = [{    
+                            text: 'Welcome to the chat chanel for ' + user,
+                            date: new Date(), sender: "system", avatar: 'img/system.png'         
+                        }];
+                    }else
+                        $scope.log = messageLog;
                 });
         };
 }]);
