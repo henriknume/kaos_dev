@@ -1,4 +1,5 @@
-package Resources;
+
+package kaos.resources;
 
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -7,8 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import kaos.core.KaosUser;
-import kaos.core.Team;
-import kaos.core.TeamMessage;
+import kaos.core.PrivateMessage;
 
 /**
  *
@@ -18,47 +18,46 @@ import kaos.core.TeamMessage;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(name = "TeamMessage", propOrder = {
+@XmlType(name = "PrivateMessage", propOrder = {
     "id",
     "text",
     "timestamp",
     "sender",
     "receiver"
 })
+public class PrivateMessageWrapper {
 
-public class TeamMessageWrapper {
+    private PrivateMessage privateMessage;
 
-    private TeamMessage teamMessage;
-
-    protected TeamMessageWrapper() { // Must have!!
+    protected PrivateMessageWrapper() { // Must have!!
     }
    
-    public  TeamMessageWrapper(TeamMessage teamMessage) { 
-        this.teamMessage = teamMessage; 
+    public  PrivateMessageWrapper(PrivateMessage teamMessage) { 
+        this.privateMessage = teamMessage; 
     }
     
     @XmlElement
     public long getId() {
-        return teamMessage.getId();
+        return privateMessage.getId();
     }
 
     @XmlElement //If serving XML we should use @XmlAttribute 
     public String getText() {
-        return teamMessage.getText();
+        return privateMessage.getText();
     }
 
     @XmlElement
     public Date getTimestamp() {
-        return teamMessage.getTimestamp();
+        return privateMessage.getTimestamp();
     }
     
     @XmlElement
     public KaosUser getSender() {
-        return teamMessage.getSender();
+        return privateMessage.getSender();
     }
     
     @XmlElement
-    public Team getReceiver() {
-        return teamMessage.getReceiver();
+    public KaosUser getReceiver() {
+        return privateMessage.getReceiver();
     }
 }

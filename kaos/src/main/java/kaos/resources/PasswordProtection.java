@@ -1,4 +1,4 @@
-package kaos.core;
+package kaos.resources;
 
 import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Resources;
+package kaos.resources;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -30,8 +30,8 @@ public class KaosConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(Resources.MessageResource.class);
-        resources.add(Resources.TeamResource.class);
-        resources.add(Resources.UserResource.class);
+        resources.add(kaos.resources.MessageResource.class);
+        resources.add(kaos.resources.TeamResource.class);
+        resources.add(kaos.resources.UserResource.class);
     }
 }

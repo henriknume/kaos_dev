@@ -1,4 +1,4 @@
-package kaos.persistence;
+package kaos.core;
 
 import java.util.ArrayList;
 import java.util.List;

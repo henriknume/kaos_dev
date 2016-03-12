@@ -1,4 +1,4 @@
-package Resources;
+package kaos.resources;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import java.util.List;
 import javax.inject.Inject;
 import kaos.core.Chat;
 import kaos.core.KaosUser;
-import kaos.core.PasswordProtection;
 import kaos.core.Team;
 
 /**

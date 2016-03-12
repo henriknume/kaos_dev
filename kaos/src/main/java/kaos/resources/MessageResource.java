@@ -1,4 +1,4 @@
-package Resources;
+package kaos.resources;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class MessageResource {
     @POST
     @Path("/user")
     @Consumes(value = MediaType.APPLICATION_JSON)
-        public Response createMessage(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
+        public Response createPrivateMessage(JsonObject json)throws NoSuchAlgorithmException  {    // JSON parameter
            PrivateMessage pm = new PrivateMessage(json.getString("message"), chat.getUserList().getByLogin(json.getString("sender")), chat.getUserList().getByLogin(json.getString("receiver")));
            chat.getPrivateMessageList().create(pm);
            return Response.ok().build();
@@ -67,7 +67,7 @@ public class MessageResource {
     @GET
     @Path("/user/{user1}/{user2}")
     @Produces(value = {MediaType.APPLICATION_JSON})
-        public Response findAllMessagesUser(@PathParam(value = "user1") String user1, @PathParam(value = "user2") String user2)throws NoSuchAlgorithmException  {
+        public Response findPrivateConversation(@PathParam(value = "user1") String user1, @PathParam(value = "user2") String user2)throws NoSuchAlgorithmException  {
             List<PrivateMessage> l = chat.getPrivateMessageList().getUserConversation(chat.getUserList().getByLogin(user1), chat.getUserList().getByLogin(user2));
             List<PrivateMessageWrapper> privateMessageWrapped = new ArrayList<>();
                 for(PrivateMessage pm : l) {

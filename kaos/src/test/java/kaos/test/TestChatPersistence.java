@@ -1,5 +1,6 @@
 package kaos.test;
 
+import kaos.resources.PasswordProtection;
 import java.util.List;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
