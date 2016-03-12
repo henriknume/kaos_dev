@@ -1,5 +1,5 @@
-
 package Resources;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import javax.json.Json;
@@ -17,15 +17,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import kaos.core.Chat;
 import kaos.core.KaosUser;
 import kaos.core.PasswordProtection;
 import kaos.core.Team;
-
-
 
 /**
  *
@@ -34,8 +30,6 @@ import kaos.core.Team;
  */
 @Path("teams")
 public class TeamResource {
-    
-    private final static Logger log = Logger.getAnonymousLogger();
     
     @Context
     private UriInfo uriInfo;
@@ -67,6 +61,7 @@ public class TeamResource {
         public Response createTeam(JsonObject json)throws NoSuchAlgorithmException  {     // JSON parameter
             String salt = PasswordProtection.getSalt();
             Team team = new Team(json.getString("team_name"), PasswordProtection.hashPassword(json.getString("password"), salt) + salt);
+            team.addUser(chat.getUserList().getByLogin(json.getString("user")));
             chat.getTeamList().create(team);
             return Response.ok().build();
         }
@@ -75,8 +70,6 @@ public class TeamResource {
     @Path("/count")
     @Produces({MediaType.APPLICATION_JSON})
         public Response countTeams() {
-
-            log.log(Level.INFO, "Count.........logging.........");
             int c = chat.getTeamList().count();
             // Can't return primitive types, create object
             JsonObject value = Json.createObjectBuilder().add("value", c ).build();

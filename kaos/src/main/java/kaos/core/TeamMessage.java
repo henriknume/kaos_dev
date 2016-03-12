@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package kaos.core;
-
-
 /**
  *
  * @author Davidf
@@ -18,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  *
  * @author Davidf

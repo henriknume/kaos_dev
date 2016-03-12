@@ -1,4 +1,3 @@
-
 package Resources;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,6 +20,7 @@ import kaos.core.KaosUser;
     "password",
     "email"
 })
+
 public class KaosUserWrapper {
 
     private KaosUser user;
@@ -46,6 +46,4 @@ public class KaosUserWrapper {
     public String getEmail() {
         return user.getEmail();
     }
-    
-    
 }

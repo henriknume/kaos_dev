@@ -5,7 +5,6 @@
  */
 package kaos.core;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,9 +28,6 @@ public class PrivateMessageList extends AbstractDAO<PrivateMessage, Long>{
     public EntityManager getEntityManager() {
         return em;
     }
-    
-    //SELECT * FROM PrivateMessage, Message WHERE PrivateMessage.id = Message.id
-    
     
     public List<PrivateMessage> getBySender(KaosUser sender){
         String jpql = "select m from PrivateMessage m where m.sender = :sender";

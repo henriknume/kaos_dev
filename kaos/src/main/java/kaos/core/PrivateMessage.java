@@ -20,6 +20,7 @@ import lombok.Setter;
  */
 @Entity
 public class PrivateMessage implements Serializable{
+    
 private static final long serialVersionUID = 1L;
     @Id
     @Getter
@@ -38,7 +39,6 @@ private static final long serialVersionUID = 1L;
     @Getter
     @Setter
     private KaosUser receiver;
-
 
     public PrivateMessage(){
     }

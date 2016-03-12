@@ -6,8 +6,6 @@
 package kaos.core;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,17 +17,17 @@ import kaos.persistence.AbstractDAO;
 @Stateless
 public class TeamList extends AbstractDAO<Team, String> {
     
-    private final static Logger log = Logger.getAnonymousLogger();
-    
     @PersistenceContext
     private EntityManager em;
     
     public TeamList() {
         super(Team.class);
     }
+    
     public EntityManager getEntityManager() {
         return em;
     }
+    
     public Team getByTeamName(String name){
         String jpql = "select t from Team t where t.name = :name";
         List<Team> temp = em.createQuery(jpql, Team.class).setParameter("name", name).getResultList();
@@ -38,6 +36,7 @@ public class TeamList extends AbstractDAO<Team, String> {
         else
             return temp.get(0);
     }
+    
     public List<KaosUser> getMembers(String teamName){
         String jpql = "select t from Team t where t.name = :name";
         List<Team> temp = em.createQuery(jpql, Team.class).setParameter("name", teamName).getResultList();
@@ -47,6 +46,7 @@ public class TeamList extends AbstractDAO<Team, String> {
             return temp.get(0).getMembers();
         }
     }
+    
     public ArrayList<Team> getTeamsByUser(String user){
         String jpql = "select t from Team t";
         List<Team> l = em.createQuery(jpql, Team.class).getResultList();

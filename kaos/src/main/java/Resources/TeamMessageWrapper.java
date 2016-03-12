@@ -1,4 +1,3 @@
-
 package Resources;
 
 import java.util.Date;
@@ -26,6 +25,7 @@ import kaos.core.TeamMessage;
     "sender",
     "receiver"
 })
+
 public class TeamMessageWrapper {
 
     private TeamMessage teamMessage;

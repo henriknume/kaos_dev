@@ -12,7 +12,7 @@ chat.controller('TeamCreateController',
         
         $scope.run = function(){
             $scope.dataLoading = true;
-            TeamService.createTeam({team_name: $scope.team_name, password: $scope.password})
+            TeamService.createTeam({team_name: $scope.team_name, password: $scope.password}, $rootScope.globals.currentUser.username)
                 .success(function(){
                     FlashService.Success('Creation successful', true);
                     $location.path('/');

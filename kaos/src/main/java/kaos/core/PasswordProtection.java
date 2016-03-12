@@ -1,4 +1,3 @@
-
 package kaos.core;
 
 import java.security.SecureRandom;

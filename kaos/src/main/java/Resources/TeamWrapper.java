@@ -1,4 +1,3 @@
-
 package Resources;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -42,5 +41,4 @@ public class TeamWrapper {
     public String getPassword() {
         return team.getPassword();
     }
-    
 }

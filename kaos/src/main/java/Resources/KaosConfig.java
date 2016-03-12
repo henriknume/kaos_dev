@@ -13,7 +13,6 @@ import javax.ws.rs.core.Application;
  * @author Davidf
  */
 
-    
 @javax.ws.rs.ApplicationPath("webresources")
 public class KaosConfig extends Application {
 
@@ -35,5 +34,4 @@ public class KaosConfig extends Application {
         resources.add(Resources.TeamResource.class);
         resources.add(Resources.UserResource.class);
     }
-    
 }

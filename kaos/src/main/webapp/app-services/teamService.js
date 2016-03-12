@@ -20,8 +20,8 @@ angular.module('app').factory('TeamService', ['$http',
             getTeamMembers: function(team, user){
                 return $http.get(url + "/members/" + team + "/" + user);
             },
-            createTeam: function(team) {
-                return $http.post(url, team);
+            createTeam: function(team, user) {
+                return $http.post(url, {team_name: team.team_name, password: team.password, user: user});
             },
             /*delete: function(id) {
                 return $http.delete(url + "/" + id);
