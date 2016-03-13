@@ -3,21 +3,24 @@
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-            <li class="sidebar-brand" id="create">
+            <li class="sidebar-brand" id="username">
+                <a>Username</a>
+            </li>
+            <li class="sidebar-link" id="create">
                 <a href="#/create">Create Team</a>
             </li>
-            <li class="sidebar-brand" id="join">
+            <li class="sidebar-link" id="join">
                 <a href="#/join">Join Team</a>
             </li>
             <li class="sidebar-brand">
                 <a>My Teams</a>
             </li>
             <!-- show all teams -->
-            <li ng-repeat="team in teams">  
+            <li class="sidebar-item" ng-repeat="team in teams">  
                 <a ng-click="enterChatRoom(team)">{{team}}</a>
             </li>
             <!--if user has o teams show this  -->
-            <li ng-show="!teams.length">
+            <li class="sidebar-item" ng-show="!teams.length">
                 <a>No teams available</a>
             </li>
             
@@ -27,16 +30,16 @@
                 <a>Current team title</a>
             </li>
             <!-- show all members of the selected team -->
-            <li ng-repeat="member in currentTeamMembers">  
+            <li class="sidebar-item" ng-repeat="member in currentTeamMembers">  
                 <a ng-click="enterPrivateChatRoom(member)">{{member.login}}</a>
             </li>   
            
             <!--if team has no members show this  -->
-            <li ng-show="!currentTeamMembers.length">
+            <li class="sidebar-item" ng-show="!currentTeamMembers.length">
                 <a>No members</a>
             </li>
             
-            <li class="sidebar-brand">
+            <li class="sidebar-link">
                 <a id='logout' href="#/login" >Log out</a>
             </li>
             
