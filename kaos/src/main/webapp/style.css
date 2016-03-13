@@ -1,0 +1,14 @@
+/* 
+    Created on : Mar 13, 2016, 6:16:16 PM
+    Author     : nm2
+*/
+
+.jumbotron {
+                margin-bottom: 0px;
+                height: 180px;
+                background-image: url(img/chaos_banner.png);
+                background-position: 0% 25%;
+                /* background-size: cover;*/
+                background-repeat: no-repeat;
+                color: #77DD77;
+            }

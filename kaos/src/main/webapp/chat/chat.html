@@ -4,7 +4,7 @@
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand" id="username">
-                <a>Username</a>
+                <a>{{currentUser.username}}</a>
             </li>
             <li class="sidebar-link" id="create">
                 <a href="#/create">Create Team</a>
@@ -26,8 +26,7 @@
             
             <!--  Team members -->
             <li class="sidebar-brand">
-                <!--<a>{{pm_title}}</a>-->
-                <a>Current team title</a>
+                <a>{{currentTeam}}</a>
             </li>
             <!-- show all members of the selected team -->
             <li class="sidebar-item" ng-repeat="member in currentTeamMembers">  
@@ -52,6 +51,7 @@
         <div class="container-fluid">
             <div id="chat_window">
                 <div class="col-lg-12">
+                    <h4>#{{currentTeam}}</h4>
                     <div id="chat_log"> 
                     <!--This is where all messages will appear-->            
                         <div ng-repeat="message in log">
@@ -81,11 +81,3 @@
     <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
-    
-<!-- Menu Toggle Script -->
-<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-</script>
