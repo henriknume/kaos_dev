@@ -34,7 +34,7 @@
             </li>   
            
             <!--if team has no members show this  -->
-            <li class="sidebar-item" ng-show="!currentTeamMembers.length">
+            <li class="sidebar-item" ng-show="currentTeam !== null && !currentTeamMembers.length">
                 <a>No members</a>
             </li>
             
@@ -51,7 +51,7 @@
         <div class="container-fluid">
             <div id="chat_window">
                 <div class="col-lg-12">
-                    <h4>#{{currentTeam}}</h4>
+                    <h4>{{chat_title}}</h4>
                     <div id="chat_log"> 
                     <!--This is where all messages will appear-->            
                         <div ng-repeat="message in log">

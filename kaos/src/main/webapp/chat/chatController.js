@@ -14,7 +14,7 @@ angular.module('chat', []).controller('ChatController',
         
         $scope.teams = [];  //List of all teams currentUser has joined                 
         
-        $scope.pm_title = "";//Title string displayed in sidebar                               
+        $scope.chat_title = "";//Title on top of chat log                               
         
         $scope.currentPrivate = null;//The name of the user that currentUser is chatting with       
         
@@ -51,7 +51,7 @@ angular.module('chat', []).controller('ChatController',
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
             $scope.updateTeamMembers(team);
-            $scope.pm_title = "Click on one of your following team members to start chatting!";
+            $scope.chat_title = "#" + team;
             $scope.updateTeamMessageLog(team);
         };
         
@@ -59,6 +59,7 @@ angular.module('chat', []).controller('ChatController',
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
             $scope.currentPrivate = member.login;
+            $scope.chat_title = "#" + $scope.currentTeam + ": " + member.login;
             $scope.updateUserMessageLog(member.login);            
         };
         
@@ -101,7 +102,7 @@ angular.module('chat', []).controller('ChatController',
                         date: new Date(), sender: 'System', avatar: 'img/system.png'             
                         }];
                     }else
-                        $scope.log = messageLog;
+                        $scope.log = messageLog.reverse();
             });
         };
         
@@ -120,7 +121,7 @@ angular.module('chat', []).controller('ChatController',
                             date: new Date(), sender: "system", avatar: 'img/system.png'         
                         }];
                     }else
-                        $scope.log = messageLog;
+                        $scope.log = messageLog.reverse();
                 });
         };
 }]);
