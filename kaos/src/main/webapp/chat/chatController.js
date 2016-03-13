@@ -16,7 +16,7 @@ angular.module('chat', []).controller('ChatController',
         
         $scope.pm_title = "";//Title string displayed in sidebar                               
         
-        $scope.currentPrivateChat = null;//The name of the user that currentUser is chatting with       
+        $scope.currentPrivate = null;//The name of the user that currentUser is chatting with       
         
         $scope.log = [{ //List of all chat messages
             text: 'Welcome ' + $scope.currentUser.username + '!', 
@@ -35,15 +35,14 @@ angular.module('chat', []).controller('ChatController',
                $scope.teams = listOfTeamNames;
             }).error(function(response){ 
                 confirm("An error occurred: " + response.message);
-                $scope.teams = [];
             });        
             
-        //Start polling
+        //Start polling. Updates every 5 sec.
         setInterval(function(){
             if($scope.chatStatus === "team"){
-                $scope.log = $scope.getTeamMessageLog($scope.currentTeam);
+                $scope.log = $scope.updateTeamMessageLog($scope.currentTeam);
             }else if($scope.chatStatus === "private"){
-                $scope.log = $scope.getUserMessageLog($scope.currentPrivateChat);                
+                $scope.log = $scope.updateUserMessageLog($scope.currentPrivate);                
             }
         }, 1000*5);
         
@@ -51,26 +50,26 @@ angular.module('chat', []).controller('ChatController',
         $scope.enterChatRoom = function(team){
             $scope.chatStatus = "team";
             $scope.currentTeam = team;
-            $scope.getTeamMembers(team);
+            $scope.updateTeamMembers(team);
             $scope.pm_title = "Click on one of your following team members to start chatting!";
-            $scope.getTeamMessageLog(team);
+            $scope.updateTeamMessageLog(team);
         };
         
         //This function is called when the user selects a private chat
         $scope.enterPrivateChatRoom = function(member){
             $scope.chatStatus = "private";
-            $scope.currentPrivateChat = member.login;
-            $scope.getUserMessageLog(member.login);            
+            $scope.currentPrivate = member.login;
+            $scope.updateUserMessageLog(member.login);            
         };
         
         //This function is called when the user submits text throught the chat box
         $scope.writeMessage = function(text){  
             if($scope.chatStatus === "team"){
                 MessageService.sendMessageToTeam($scope.currentTeam, $scope.currentUser.username, text)
-                    .then(function(){$scope.getTeamMessageLog($scope.currentTeam);});
+                    .then(function(){$scope.updateTeamMessageLog($scope.currentTeam);});
             }else if($scope.chatStatus === "private"){
-                MessageService.sendMessageToUser($scope.currentPrivateChat, $scope.currentUser.username, text)
-                    .then(function(){$scope.getUserMessageLog($scope.currentPrivateChat);});  
+                MessageService.sendMessageToUser($scope.currentPrivate, $scope.currentUser.username, text)
+                    .then(function(){$scope.updateUserMessageLog($scope.currentPrivate);});  
             }else if($scope.chatStatus === "none"){
                 $scope.log.push({   
                     text: "You are not in a team chat!", date: new Date(),
@@ -80,14 +79,14 @@ angular.module('chat', []).controller('ChatController',
             document.getElementById("myForm").reset();
         };    
        
-        $scope.getTeamMembers = function(team){
+        $scope.updateTeamMembers = function(team){
             TeamService.getTeamMembers(team, $scope.currentUser.username)
                 .then(function(response){
                     $scope.currentTeamMembers = response.data;
                 });
         };
         
-        $scope.getTeamMessageLog = function(team){
+        $scope.updateTeamMessageLog = function(team){
             MessageService.getMessageLogByTeam(team)
                 .then(function(response){
                     var messageLog = [];
@@ -106,7 +105,7 @@ angular.module('chat', []).controller('ChatController',
             });
         };
         
-        $scope.getUserMessageLog = function(user){
+        $scope.updateUserMessageLog = function(user){
             MessageService.getMessageLogByUser($scope.currentUser.username, user)
                 .then(function(response){
                     var messageLog = [];

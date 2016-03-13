@@ -1,13 +1,11 @@
 'use strict';
 
-var chat = angular.module('chat');
-
-chat.controller('TeamCreateController', 
-    ['$scope', '$rootScope', '$location', 'UserService', 'TeamService', 'FlashService',
-    function($scope, $rootScope, $location, UserService, TeamService, FlashService){
+angular.module('chat').controller('TeamCreateController', 
+    ['$scope', '$rootScope', '$location', 'TeamService', 'FlashService',
+    function($scope, $rootScope, $location, TeamService, FlashService){
         
-        $scope.title = "Create a new team";
-        
+        //static strings
+        $scope.title = "Create a new team";        
         $scope.submitText = "Create";
         
         $scope.run = function(){

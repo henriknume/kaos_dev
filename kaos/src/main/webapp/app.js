@@ -1,13 +1,11 @@
 'use strict';
 
-angular
-    .module('app', ['ngRoute', 'ngCookies', 'chat'])
+angular.module('app', ['ngRoute', 'ngCookies', 'chat'])
     .config(config)
     .run(run);
 
-config.$inject = ['$routeProvider', '$locationProvider'];
-
-function config($routeProvider, $locationProvider) {
+config.$inject = ['$routeProvider'];
+function config($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'ChatController',
@@ -34,14 +32,16 @@ function config($routeProvider, $locationProvider) {
 
 run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
 function run($rootScope, $location, $cookieStore, $http) {
+    
     // keep user logged in after page refresh
     $rootScope.globals = $cookieStore.get('globals') || {};
     if ($rootScope.globals.currentUser) {
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
     }
 
+    // redirect to login page if not logged in and trying to access a restricted page
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        // redirect to login page if not logged in and trying to access a restricted page
+        
         var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
         var loggedIn = $rootScope.globals.currentUser;
         if (restrictedPage && !loggedIn) {

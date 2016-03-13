@@ -1,74 +1,53 @@
 <!DOCTYPE html>
 <html ng-app="app">
-<head>
-    <meta charset="utf-8" />
-    <title>Koasdev's chat</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-    <link property='stylesheet' href="chat/chatStyle.css" rel="stylesheet"/>   
-    <link href="chat/simple-sidebar.css" rel="stylesheet">
-    
-    
-    <style>
-        .jumbotron {
-            margin-bottom: 0px;
-            height: 180px;
-            background-image: url(img/chaos_banner.png);
-            background-position: 0% 25%;
-/*            background-size: cover;*/
-            background-repeat: no-repeat;
-            color: #77DD77;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="utf-8" />
+        <title>Koasdev's chat</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+        <link property='stylesheet' href="chat/chatStyle.css" rel="stylesheet"/>   
+        <link href="chat/simple-sidebar.css" rel="stylesheet">
 
-
-<body>
-    <!--div id="header">
-        <h2>Welcome to kaosdev's chat!</h2>     
-    </div-->
-    
-    <div class="jumbotron">
-        <h1>KaosChat</h1>
-    </div>
-    
-    <div class="container">
-        <div class="col-sm-8 col-sm-offset-2">
-            <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>            
+        <style>
+            .jumbotron {
+                margin-bottom: 0px;
+                height: 180px;
+                background-image: url(img/chaos_banner.png);
+                background-position: 0% 25%;
+                /* background-size: cover;*/
+                background-repeat: no-repeat;
+                color: #77DD77;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="jumbotron">
+            <h1>KaosChat</h1>
         </div>
-        <div ng-view></div>
-    </div>
-    
-    <!--<div class="credits text-center">
-        <p>
-            <a href="http://jasonwatmore.com/post/2015/03/10/AngularJS-User-Registration-and-Login-Example.aspx">AngularJS User Registration and Login Example</a>
-        </p>
-        <p>
-            <a href="http://jasonwatmore.com">JasonWatmore.com</a>
-        </p>
-    </div>-->
 
-    <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="//code.angularjs.org/1.2.20/angular.js"></script>
-    <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
-    <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>            
+            </div>
+            <div ng-view></div>
+        </div>
 
-    <script src="app.js"></script>
-    <script src="app-services/authentication.service.js"></script>
-    <script src="app-services/flash.service.js"></script>
+        <!--jQuery & angular-->
+        <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="//code.angularjs.org/1.2.20/angular.js"></script>
+        <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
+        <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
 
-    <!-- Fake user service for demo that uses local storage -->
-    <!--<script src="app-services/user.service.local-storage.js"></script>-->
-    
-    <script src="app-services/userService.js"></script>
-    <script src="app-services/teamService.js"></script>
-    <script src="app-services/messageService.js"></script>
-        
-
-    <script src="login/login.controller.js"></script>
-    <script src="register/register.controller.js"></script>
-    
-    <script src="chat/chatController.js"></script>
-    <script src="team_management/teamCreateController.js"></script>
-    <script src="team_management/teamJoinController.js"></script>
-</body>
+        <!--Scripts (services, controllers etc.)-->
+        <script src="app.js"></script>
+        <script src="app-services/authenticationService.js"></script>
+        <script src="app-services/flashService.js"></script>    
+        <script src="app-services/userService.js"></script>
+        <script src="app-services/teamService.js"></script>
+        <script src="app-services/messageService.js"></script>      
+        <script src="login/loginController.js"></script>
+        <script src="register/registerController.js"></script>    
+        <script src="chat/chatController.js"></script>
+        <script src="team_management/teamCreateController.js"></script>
+        <script src="team_management/teamJoinController.js"></script>
+    </body>
 </html>

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('app').controller('RegisterController', 
-    ['$scope', 'UserService', '$location', '$rootScope', 'FlashService',
-        function ($scope, UserService, $location, $rootScope, FlashService){
+    ['$scope', 'UserService', '$location', 'FlashService',
+        function ($scope, UserService, $location, FlashService){
 
             $scope.register = function () {
                 $scope.dataLoading = true;
                 UserService.createUser($scope.user)
-                    .success(function(response){
+                    .success(function(){
                         FlashService.Success('Registration successful', true);
                         $location.path('/login');
                     }).error(function(response){

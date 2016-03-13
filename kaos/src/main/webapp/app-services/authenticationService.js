@@ -1,76 +1,29 @@
 'use strict';
 
-angular
-    .module('app')
-    .factory('AuthenticationService', AuthenticationService);
-
-AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService'];
-function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService) {
-    var service = {};
-
-    service.Login = Login;
-    service.SetCredentials = SetCredentials;
-    service.ClearCredentials = ClearCredentials;
-
-    return service;
-
-    function Login(user, callback) {
-
-        /* Dummy authentication for testing, uses $timeout to simulate api call
-         ----------------------------------------------*/
-        $timeout(function () {
-            var response;
-            UserService.getUserByLogin(user)
-                .success(function(responseUser){
-                    if (responseUser !== null && responseUser.password === user.password) {
-                        response = { success: true };
-                    } else {
-                        response = { success: false, message: 'Username or password is incorrect' };
+//Used for managing global $rootScrope variable currentUser
+angular.module('app').factory('AuthenticationService', 
+    ['$http', '$cookieStore', '$rootScope',
+    function AuthenticationService($http, $cookieStore, $rootScope) {        
+        return{
+            SetCredentials: function(username, password){
+                var authdata = Base64.encode(username + ':' + password);
+                $rootScope.globals = {
+                    currentUser: {
+                        username: username,
+                        authdata: authdata
                     }
-                    callback(response);
-                });
-            
-            
-            
-                /*.then(function (user) {
-                    if (user !== null && user.password === password) {
-                        response = { success: true };
-                    } else {
-                        response = { success: false, message: 'Username or password is incorrect' };
-                    }
-                    callback(response);
-                });*/
-        }, 1000);
-
-        /* Use this for real authentication
-         ----------------------------------------------*/
-        //$http.post('/api/authenticate', { username: username, password: password })
-        //    .success(function (response) {
-        //        callback(response);
-        //    });
-
-    }
-
-    function SetCredentials(username, password) {
-        var authdata = Base64.encode(username + ':' + password);
-
-        $rootScope.globals = {
-            currentUser: {
-                username: username,
-                authdata: authdata
+                };
+                $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+                $cookieStore.put('globals', $rootScope.globals);
+            },
+            ClearCredentials: function(){
+                $rootScope.globals = {};
+                $cookieStore.remove('globals');
+                $http.defaults.headers.common.Authorization = 'Basic';
             }
         };
-
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-        $cookieStore.put('globals', $rootScope.globals);
     }
-
-    function ClearCredentials() {
-        $rootScope.globals = {};
-        $cookieStore.remove('globals');
-        $http.defaults.headers.common.Authorization = 'Basic';
-    }
-}
+]);
 
 // Base64 encoding service used by AuthenticationService
 var Base64 = {
